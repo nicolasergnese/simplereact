@@ -9,13 +9,27 @@ ChartJS.register(
 )
 
 
+let numeriCasuali = []; //per generare numeri casuali, ma non s come metterli
+let today = new Date();
+let timestap = [];
+
+function arrayNumeriCasuali(numeriCasuali) {
+  for (let i = 0; i < 100; i++) { //riempio array
+    let tomorrow = new Date( today.setDate(today.getDate() + 1));
+
+    timestap[i] = tomorrow.getMonth()+'/'+tomorrow.getDate() ;
+    numeriCasuali[i] = Math.floor(Math.random()*90);
+  }
+}
+
+
 const grafico = ({
-  labels: [], // asse x
+  labels: timestap, // asse x
     datasets: [
       {
         label: "Power [kW]",
         // y-axis data plotting values
-        data: [], //andamento grafico
+        data: numeriCasuali, //andamento grafico
         fill: false,
         borderWidth:2, //spessore
         backgroundColor: "red", //colore punti
@@ -28,6 +42,7 @@ const grafico = ({
 
 export default function CreateChart() {
 
+  arrayNumeriCasuali(numeriCasuali);
 
   const [chart] = useState(grafico) 
 

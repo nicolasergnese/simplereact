@@ -11,8 +11,9 @@ import TableHomeGrid2 from './table/tableGrid2'
 import TableDataSource from './table/tableDataSource'
 import TableServices from './table/tableServices'
 
-import SelectForecasted from './selectForecasted' //importo menu tendina per forecast
+import SelectForecastedAndASMHQ from './selectForecastedAndASMHQ' //importo menu tendina per forecast
 import SelectOptimized from './selectOptimized'   //importo menu tendina per optimized
+import SelectEndUser from './selectEndUser'       //importo menu tendina per end user, sub dashboard
 
 import Chart from './chart' //importo chart
 
@@ -105,21 +106,27 @@ export default function BasicTabs() {
       <TabPanel value={value} index={1}> {/* historical data */}
 
 
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}> {/* sub dashboard historical data */}
           <Tabs value={valuesub} onChange={handleChange1} aria-label="basic example">
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="End user" {...a11yProps(0)} />
+          <Tab label="ASM HQ" {...a11yProps(1)} />
           </Tabs>
         </Box>
-        <TabPanel value={valuesub} index={0}>
-          Item One
+        <TabPanel value={valuesub} index={0}>  {/* end user */}
+          <SelectEndUser/>
+          <Typography variant="h5"
+            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+            Historical data
+          </Typography>
+          <Chart/>
         </TabPanel>
-        <TabPanel value={valuesub} index={1}>
-          Item Two
-        </TabPanel>
-        <TabPanel value={valuesub} index={2}>
-          Item Three
+        <TabPanel value={valuesub} index={1}> {/* asm hq */}
+        <SelectForecastedAndASMHQ/>
+        <Typography variant="h5"
+            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+            Historical data
+        </Typography>
+        <Chart/>
         </TabPanel>
 
 
@@ -127,13 +134,14 @@ export default function BasicTabs() {
       
   
       <TabPanel value={value} index={2}> {/* forecast data*/}
-        <SelectForecasted/>
+        <SelectForecastedAndASMHQ/>
         <Typography variant="h5"
             sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
             Forecasted data
-      </Typography>
-      <Chart/>
+        </Typography>
+        <Chart/>
       </TabPanel>
+      
 
 
       <TabPanel value={value} index={3}> {/* optimized data */}
