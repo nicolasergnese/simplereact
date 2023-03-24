@@ -4,13 +4,13 @@ import Home from './pages/home';
 import Login from './pages/login';
 import SignUp from './pages/sing_up';
 import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
+//import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Navbar from './pages/navbar';
-import Footer from './pages/footer';
+//import Footer from './pages/footer';
 import PrivateRoute from './utils/PrivateRoute';
-import Drawer from './pages/drawer';
+//import Drawer from './pages/drawer';
 import { styled } from '@mui/material/styles';
 import './App.css';
 

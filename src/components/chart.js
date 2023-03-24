@@ -29,7 +29,7 @@ const grafico = ({
 export default function CreateChart() {
 
 
-  const [chart, setChart] = useState(grafico) 
+  const [chart] = useState(grafico) 
 
  
   return (
