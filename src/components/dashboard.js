@@ -21,7 +21,7 @@ import Chart from './chart' //importo chart
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
+console.log(props)
   return (
     <div
       role="tabpanel"
@@ -55,10 +55,18 @@ function a11yProps(index) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
+  const [valuesub, setValueSub] = React.useState(0);
 
   const handleChange = (event, newValue) => {
-    console.log(newValue);
+    console.log(event.value);
+    console.log(newValue)
     setValue(newValue);
+    setValueSub(0)
+  };
+  const handleChange1 = (event, newValue) => {
+    console.log(event.value);
+    console.log(newValue)
+    setValueSub(newValue);
   };
 
 
@@ -98,19 +106,19 @@ export default function BasicTabs() {
 
 
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Item One" {...a11yProps(4)} />
-          <Tab label="Item Two" {...a11yProps(5)} />
-          <Tab label="Item Three" {...a11yProps(6)} />
+          <Tabs value={valuesub} onChange={handleChange1} aria-label="basic example">
+          <Tab label="Item One" {...a11yProps(0)} />
+          <Tab label="Item Two" {...a11yProps(1)} />
+          <Tab label="Item Three" {...a11yProps(2)} />
           </Tabs>
         </Box>
-        <TabPanel value={value} index={4}>
+        <TabPanel value={valuesub} index={0}>
           Item One
         </TabPanel>
-        <TabPanel value={value} index={5}>
+        <TabPanel value={valuesub} index={1}>
           Item Two
         </TabPanel>
-        <TabPanel value={value} index={6}>
+        <TabPanel value={valuesub} index={2}>
           Item Three
         </TabPanel>
 
