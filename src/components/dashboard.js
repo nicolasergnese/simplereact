@@ -57,7 +57,7 @@ export default function BasicTabs() {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} variant="fullWidth" aria-label="basic tabs example">
-          <Tab label="Home" {...a11yProps(0)} />
+          <Tab label="Home" {...a11yProps(0)} /> 
           <Tab label="Historical data" {...a11yProps(1)} />
           <Tab label="Forecasted data" {...a11yProps(2)} />
           <Tab label="Optimized data" {...a11yProps(3)} />
