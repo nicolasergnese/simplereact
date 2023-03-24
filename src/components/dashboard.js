@@ -6,10 +6,17 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 
-import TableHomeGrid1 from './table/tableGrid1'
+import TableHomeGrid1 from './table/tableGrid1' //import table
 import TableHomeGrid2 from './table/tableGrid2'
 import TableDataSource from './table/tableDataSource'
 import TableServices from './table/tableServices'
+
+import SelectForecasted from './selectForecasted' //importo menu tendina per forecast
+import SelectOptimized from './selectOptimized'   //importo menu tendina per optimized
+
+import Chart from './chart' //importo chart
+
+
 
 
 function TabPanel(props) {
@@ -39,6 +46,7 @@ TabPanel.propTypes = {
 };
 
 function a11yProps(index) {
+  console.log(index);
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`,
@@ -49,6 +57,7 @@ export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
+    console.log(newValue);
     setValue(newValue);
   };
 
@@ -63,7 +72,7 @@ export default function BasicTabs() {
           <Tab label="Optimized data" {...a11yProps(3)} />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
+      <TabPanel value={value} index={0}> {/* home */}
       <Typography variant="h5"
             sx={{ marginTop: "40px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
             Grid 1 main parameters
@@ -85,14 +94,47 @@ export default function BasicTabs() {
       </Typography>
       <TableServices/>
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        Historical data
+      <TabPanel value={value} index={1}> {/* historical data */}
+
+
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="Item One" {...a11yProps(4)} />
+          <Tab label="Item Two" {...a11yProps(5)} />
+          <Tab label="Item Three" {...a11yProps(6)} />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={4}>
+          Item One
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          Item Two
+        </TabPanel>
+        <TabPanel value={value} index={6}>
+          Item Three
+        </TabPanel>
+
+
       </TabPanel>
-      <TabPanel value={value} index={2}>
-        Forecasted data
+      
+  
+      <TabPanel value={value} index={2}> {/* forecast data*/}
+        <SelectForecasted/>
+        <Typography variant="h5"
+            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+            Forecasted data
+      </Typography>
+      <Chart/>
       </TabPanel>
-      <TabPanel value={value} index={3}>
-        Optimized data
+
+
+      <TabPanel value={value} index={3}> {/* optimized data */}
+      <SelectOptimized/>
+        <Typography variant="h5"
+            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+            Optimized trend
+      </Typography>
+      <Chart/>
       </TabPanel>
     </Box>
   );
