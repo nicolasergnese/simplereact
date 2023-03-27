@@ -10,8 +10,11 @@ export default function BasicSelect() {
 
   const [power, setPower] = React.useState(''); //menu a tendina power
 
-  const handleChange = (event) => {
+  const handleChange = (event) => { //menu a tendina meter
     setMeter(event.target.value);
+  };
+
+  const handleChange1 = (event) => {//menu a tendina power
     setPower(event.target.value);
   };
 
@@ -39,7 +42,7 @@ export default function BasicSelect() {
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={power}
-          onChange={handleChange}
+          onChange={handleChange1}
         >
           <MenuItem value={1}>Active Power</MenuItem>
           <MenuItem value={2}>Reactive Power</MenuItem>

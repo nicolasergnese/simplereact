@@ -17,6 +17,8 @@ import SelectEndUser from './selectEndUser'       //importo menu tendina per end
 
 import Chart from './chart' //importo chart
 
+import DateAndTime from './dateAndTime' //importo data e orario per gli chart
+
 
 
 
@@ -104,8 +106,6 @@ export default function BasicTabs() {
       <TableServices/>
       </TabPanel>
       <TabPanel value={value} index={1}> {/* historical data */}
-
-
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}> {/* sub dashboard historical data */}
           <Tabs value={valuesub} onChange={handleChange1} aria-label="basic example">
           <Tab label="End user" {...a11yProps(0)} />
@@ -114,10 +114,23 @@ export default function BasicTabs() {
         </Box>
         <TabPanel value={valuesub} index={0}>  {/* end user */}
           <SelectEndUser/>
+
           <Typography variant="h5"
             sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
             Historical data
           </Typography>
+          <Box sx = {{display : "inline-block", textAlign : "center"}}> {/* importo data e orario per gli chart */}
+          <Typography
+            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+              Start date/time
+          </Typography>
+          <DateAndTime/>
+          <Typography
+            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+              End date/time
+          </Typography>
+          <DateAndTime/>
+          </Box>
           <Chart/>
         </TabPanel>
         <TabPanel value={valuesub} index={1}> {/* asm hq */}
@@ -126,6 +139,18 @@ export default function BasicTabs() {
             sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
             Historical data
         </Typography>
+        <Box sx = {{display : "inline-block", textAlign : "center"}}> {/* importo data e orario per gli chart */}
+          <Typography
+            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+              Start date/time
+          </Typography>
+          <DateAndTime/>
+          <Typography
+            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+              End date/time
+          </Typography>
+          <DateAndTime/>
+          </Box>
         <Chart/>
         </TabPanel>
 
@@ -150,6 +175,18 @@ export default function BasicTabs() {
             sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
             Optimized trend
       </Typography>
+      <Box sx = {{display : "inline-block", textAlign : "center"}}> {/* importo data e orario per gli chart */}
+          <Typography
+            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+              Start date/time
+          </Typography>
+          <DateAndTime/>
+          <Typography
+            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+              End date/time
+          </Typography>
+          <DateAndTime/>
+          </Box>
       <Chart/>
       </TabPanel>
     </Box>
