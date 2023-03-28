@@ -36,21 +36,21 @@ export default function BasicSelect() {
         </Select>
       </FormControl>
       <Box>
-      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-        <InputLabel id="demo-simple-select-label">Power</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={power}
-          onChange={handleChange1}
-        >
-          <MenuItem value={1}>Active Power</MenuItem>
-          <MenuItem value={2}>Reactive Power</MenuItem>
-          <MenuItem value={3}>Voltage</MenuItem>
-        </Select>
-      </FormControl>
+        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+          <InputLabel id="demo-simple-select-label">Power</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={power}
+            onChange={handleChange1}
+          >
+            <MenuItem value={1}>Active Power</MenuItem>
+            <MenuItem value={2}>Reactive Power</MenuItem>
+            <MenuItem value={3}>Voltage</MenuItem>
+          </Select>
+        </FormControl>
       </Box>
     </Box>
-    
+
   );
 }

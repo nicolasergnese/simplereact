@@ -19,12 +19,13 @@ import Chart from './chart' //importo chart
 
 import DateAndTime from './dateAndTime' //importo data e orario per gli chart
 
+import './Components.css';
 
 
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-console.log(props)
+  console.log(props)
   return (
     <div
       role="tabpanel"
@@ -77,117 +78,109 @@ export default function BasicTabs() {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} variant="fullWidth" aria-label="basic tabs example">
-          <Tab label="Home" {...a11yProps(0)} /> 
+          <Tab label="Home" {...a11yProps(0)} />
           <Tab label="Historical data" {...a11yProps(1)} />
           <Tab label="Forecasted data" {...a11yProps(2)} />
           <Tab label="Optimized data" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}> {/* home */}
-      <Typography variant="h5"
-            sx={{ marginTop: "40px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Grid 1 main parameters
-      </Typography>
-      <TableHomeGrid1 title = { 'Value'} />
-      <Typography variant="h5"
-            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Grid 2 main parameters
-      </Typography>
-      <TableHomeGrid2/>
-      <Typography variant="h5"
-            sx={{ marginTop: "30px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Data Source
-      </Typography>
-      <TableDataSource/>
-      <Typography variant="h5"
-            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Services
-      </Typography>
-      <TableServices/>
+        <Typography variant="h5"
+          sx={{ marginTop: "40px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+          Grid 1 main parameters
+        </Typography>
+        <TableHomeGrid1 title={'Value'} />
+        <Typography variant="h5"
+          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+          Grid 2 main parameters
+        </Typography>
+        <TableHomeGrid2 />
+        <Typography variant="h5"
+          sx={{ marginTop: "30px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+          Data Source
+        </Typography>
+        <TableDataSource />
+        <Typography variant="h5"
+          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+          Services
+        </Typography>
+        <TableServices />
       </TabPanel>
       <TabPanel value={value} index={1}> {/* historical data */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}> {/* sub dashboard historical data */}
           <Tabs value={valuesub} onChange={handleChange1} aria-label="basic example">
-          <Tab label="End user" {...a11yProps(0)} />
-          <Tab label="ASM HQ" {...a11yProps(1)} />
+            <Tab label="End user" {...a11yProps(0)} />
+            <Tab label="ASM HQ" {...a11yProps(1)} />
           </Tabs>
         </Box>
         <TabPanel value={valuesub} index={0}>  {/* end user */}
-          <SelectEndUser/>
-
+          <SelectEndUser />
           <Typography variant="h5"
             sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
             Historical data
           </Typography>
-          <Box sx = {{display : "inline-block", textAlign : "center"}}> {/* importo data e orario per gli chart */}
-          <Typography
-            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+          <Box className="Inline">
+            <Typography
+              sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
               Start date/time
-          </Typography>
-          <DateAndTime/>
-          <Typography
-            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+            </Typography>
+            <DateAndTime />
+            <Typography
+              sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
               End date/time
-          </Typography>
-          <DateAndTime/>
+            </Typography>
+            <DateAndTime />
           </Box>
-          <Chart/>
+          <Chart />
         </TabPanel>
         <TabPanel value={valuesub} index={1}> {/* asm hq */}
-        <SelectForecastedAndASMHQ/>
-        <Typography variant="h5"
+          <SelectForecastedAndASMHQ />
+          <Typography variant="h5"
             sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
             Historical data
-        </Typography>
-        <Box sx = {{display : "inline-block", textAlign : "center"}}> {/* importo data e orario per gli chart */}
-          <Typography
-            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+          </Typography>
+          <Box className="Inline">
+            <Typography
+              sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
               Start date/time
-          </Typography>
-          <DateAndTime/>
-          <Typography
-            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
+            </Typography>
+            <DateAndTime />
+            <Typography
+              sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
               End date/time
-          </Typography>
-          <DateAndTime/>
+            </Typography>
+            <DateAndTime />
           </Box>
-        <Chart/>
+          <Chart />
         </TabPanel>
-
-
       </TabPanel>
-      
-  
       <TabPanel value={value} index={2}> {/* forecast data*/}
-        <SelectForecastedAndASMHQ/>
+        <SelectForecastedAndASMHQ />
         <Typography variant="h5"
-            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Forecasted data
+          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+          Forecasted data (At the moment these data are not yet available)
         </Typography>
-        <Chart/>
+        <Chart />
       </TabPanel>
-      
-
-
       <TabPanel value={value} index={3}> {/* optimized data */}
-      <SelectOptimized/>
+        <SelectOptimized />
         <Typography variant="h5"
-            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Optimized trend
-      </Typography>
-      <Box sx = {{display : "inline-block", textAlign : "center"}}> {/* importo data e orario per gli chart */}
+          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+          Optimized trend (Data are not available)
+        </Typography>
+        <Box className="Inline">
           <Typography
             sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
-              Start date/time
+            Start date/time
           </Typography>
-          <DateAndTime/>
+          <DateAndTime />
           <Typography
             sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
-              End date/time
+            End date/time
           </Typography>
-          <DateAndTime/>
-          </Box>
-      <Chart/>
+          <DateAndTime />
+        </Box>
+        <Chart />
       </TabPanel>
     </Box>
   );

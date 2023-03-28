@@ -13,7 +13,7 @@ function createData(name, totalNumber, numberAvailable, totalInstalledPower, act
 
 const rows = [
   createData('End user', 43, 'number of devices that are actually included in the dashboard', 129, 'sum  of the active power of all the devices from SYN'),
-  createData('ASM Headquarter', 5, 'number of devices that are actually included in the dashboard', 0,  'sum  of the active power of all the devices from SYN' ),
+  createData('ASM Headquarter', 5, 'number of devices that are actually included in the dashboard', 0, 'sum  of the active power of all the devices from SYN'),
   createData('Total', 'some of the above values', 'some of the above values', 'some of the above values', 'some of the above values'),
 ];
 
@@ -21,7 +21,7 @@ export default function BasicTable() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead sx={{ backgroundColor:"#38ACEC", fontWeight: 'bold' }}>
+        <TableHead sx={{ backgroundColor: "#38ACEC", fontWeight: 'bold' }}>
           <TableRow>
             <TableCell></TableCell>
             <TableCell align="right">Total number</TableCell>

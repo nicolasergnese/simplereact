@@ -11,7 +11,7 @@ export default function DateTimePickerValue() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} >
       <DemoContainer components={['DateTimePicker']} >
-        <DateTimePicker size="small"
+        <DateTimePicker
           label="Controlled picker"
           value={value}
           onChange={(newValue) => setValue(newValue)}

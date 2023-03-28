@@ -1,0 +1,10 @@
+.Inline {
+    display: flex;
+    justify-content: space-around;
+}
+
+.Chart {
+    margin-top: 20px;
+    height: 550px;
+    width: 1200px;
+}
