@@ -6,9 +6,8 @@ import Box from '@mui/material/Box';
 import './Components.css';
 
 
-import { useNavigate } from 'react-router-dom'; //per navigare tra le pagine
 import ChartService from '../services/chartServices';
-import { omit } from 'lodash';
+
 
 ChartJS.register(
   Title, Tooltip, LineElement, Legend,
@@ -16,33 +15,16 @@ ChartJS.register(
 )
 
 
-let numeriCasuali = []; //per generare numeri casuali, ma non s come metterli
-let today = new Date();
-let timestap = [];
-
-function arrayNumeriCasuali(numeriCasuali) {
-  for (let i = 0; i < 100; i++) { //riempio array
-    let tomorrow = new Date(today.setDate(today.getDate() + 1));
-
-    timestap[i] = tomorrow.getMonth() + '/' + tomorrow.getDate();
-    numeriCasuali[i] = Math.floor(Math.random() * 90);
-  }
-}
 
 
 export default function CreateChart() {
 
-  arrayNumeriCasuali(numeriCasuali);
 
   const [numbers, setNumbers] = useState([])
 
-  const navigate = useNavigate();
-
-  const [errors, setErrors] = useState({});
-
 
   useEffect(() => {
-
+    fetchNumbers()
   }, []);
 
 
@@ -53,7 +35,7 @@ export default function CreateChart() {
   }
 
   const [values, setValues] = useState({
-    labels: timestap, // asse x
+    labels: [], // asse x
     datasets: [
       {
         label: "Power [kW]",
@@ -70,7 +52,7 @@ export default function CreateChart() {
   });
 
 
-  const handleChange = (e) => { //prende valori dl grafico e id, id serve per gli chart?
+  const handleChange = (e) => { //prende valori dl grafico e id, id serve per gli chart?, prendo l'evento iniziale
     //To stop default events    
     e.persist();
     const { id, value } = e.target
@@ -84,7 +66,7 @@ export default function CreateChart() {
   }
 
 
-  const handleSubmitClick = (e) => { //ci devo mettere le date?, a quale bottone?
+  const handleSubmitClick = (e) => { //ci devo mettere le date?, a quale bottone?, per cambiare evento, cioè grafico
     console.log("send data")
     e.preventDefault();
     const payload = {
