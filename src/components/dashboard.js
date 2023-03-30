@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+
 
 
 import TableHomeGrid1 from './table/tableGrid1' //import table
@@ -25,7 +26,7 @@ import './Components.css';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  console.log(props)
+  //console.log(props)
   return (
     <div
       role="tabpanel"
@@ -58,18 +59,20 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs() {
-  const [value, setValue] = React.useState(0);
-  const [valuesub, setValueSub] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [valuesub, setValueSub] = useState(0);
+  const [valueDate, setValueDate] = useState();
+
 
   const handleChange = (event, newValue) => {
-    console.log(event.value);
-    console.log(newValue)
+    //console.log(event.value);
+    //console.log(newValue)
     setValue(newValue);
     setValueSub(0)
   };
   const handleChange1 = (event, newValue) => {
-    console.log(event.value);
-    console.log(newValue)
+    //console.log(event.value);
+    //console.log(newValue)
     setValueSub(newValue);
   };
 
@@ -120,16 +123,8 @@ export default function BasicTabs() {
             Historical data
           </Typography>
           <Box className="Inline">
-            <Typography
-              sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
-              Start date/time
-            </Typography>
-            <DateAndTime />
-            <Typography
-              sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
-              End date/time
-            </Typography>
-            <DateAndTime />
+            <DateAndTime label = "Start date/time" setValueDate = {setValueDate}/>
+            <DateAndTime label = "End date/time" setValueDate = {setValueDate} />
           </Box>
           <Chart />
         </TabPanel>
@@ -140,16 +135,8 @@ export default function BasicTabs() {
             Historical data
           </Typography>
           <Box className="Inline">
-            <Typography
-              sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
-              Start date/time
-            </Typography>
-            <DateAndTime />
-            <Typography
-              sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
-              End date/time
-            </Typography>
-            <DateAndTime />
+            <DateAndTime label = "Start date/time" setValueDate = {setValueDate}/>
+            <DateAndTime label = "End date/time" setValueDate = {setValueDate}/>
           </Box>
           <Chart />
         </TabPanel>
@@ -169,16 +156,8 @@ export default function BasicTabs() {
           Optimized trend (Data are not available)
         </Typography>
         <Box className="Inline">
-          <Typography
-            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
-            Start date/time
-          </Typography>
-          <DateAndTime />
-          <Typography
-            sx={{ marginTop: "20px", color: "rgb(255, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>
-            End date/time
-          </Typography>
-          <DateAndTime />
+          <DateAndTime label = "Start date/time" setValueDate = {setValueDate}/>
+          <DateAndTime label = "End date/time" setValueDate = {setValueDate}/>
         </Box>
         <Chart />
       </TabPanel>

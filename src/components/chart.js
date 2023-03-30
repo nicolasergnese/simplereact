@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Chart as ChartJS, Title, Tooltip, LineElement, Legend, CategoryScale, LinearScale, PointElement } from 'chart.js';
 import { Line } from 'react-chartjs-2';//grafico che voglio
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import './Components.css';
 
@@ -15,24 +16,11 @@ ChartJS.register(
 )
 
 
-
-
 export default function CreateChart() {
 
 
   const [numbers, setNumbers] = useState([])
 
-
-  useEffect(() => {
-    fetchNumbers()
-  }, []);
-
-
-  async function fetchNumbers() {
-    const response = await fetch("/api/numeriCasuali");
-    const newNumbers = await response.json();
-    setNumbers(newNumbers);
-  }
 
   const [values, setValues] = useState({
     labels: [], // asse x
@@ -68,7 +56,7 @@ export default function CreateChart() {
 
   const handleSubmitClick = (e) => { //ci devo mettere le date?, a quale bottone?, per cambiare evento, cioè grafico
     console.log("send data")
-    e.preventDefault();
+    //e.preventDefault();
     const payload = {
       "labels": values.labels,
       "data": values.datasets.data,
@@ -77,29 +65,30 @@ export default function CreateChart() {
     ChartService.chart(payload)
       .then((response) => {
         console.log(response)
-        if (response.status !== 200 || response.status !== 201)
+        //alert(JSON.stringify(response));
+        /* if (response.status !== 200 || response.status !== 201)
           setValues({
             ...values,
             successMessage: response.data.message,
-          })
+          }) */
       })
       .catch(function (error) {
         console.log(error);
-        setValues({
+       /*  setValues({
           ...values,
           successMessage: "errors",
-        })
+        }) */
         //props.showError("Username does not exists");
       });
   }
 
 
-
   return (
-
+    <Box textAlign={"center"} sx= {{marginTop: 5}}>
+      <Button variant="contained" onClick={() => {handleSubmitClick()}}> Search</Button>
     <Box className="Chart"> {/*Components.css*/}
       <Line data={values}></Line>
     </Box>
-
+    </Box>
   );
 }
