@@ -5,7 +5,7 @@ const API_URL = config.host+"/chart/";
 
 class ChartService {
     async chart(data) {
-        const response = await axios.post(API_URL, data).then(response => {
+        const response = await axios.get(API_URL).then(response => {
             console.log(response);
             return response;
 

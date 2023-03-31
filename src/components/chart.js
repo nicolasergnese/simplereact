@@ -23,7 +23,7 @@ export default function CreateChart() {
 
 
   const [values, setValues] = useState({
-    labels: [], // asse x
+    labels: numbers, // asse x
     datasets: [
       {
         label: "Power [kW]",
@@ -65,7 +65,9 @@ export default function CreateChart() {
     ChartService.chart(payload)
       .then((response) => {
         console.log(response)
-        //alert(JSON.stringify(response));
+        //alert(response.data);
+        setNumbers(response.data)
+
         /* if (response.status !== 200 || response.status !== 201)
           setValues({
             ...values,
