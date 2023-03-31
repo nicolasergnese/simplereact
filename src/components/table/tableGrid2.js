@@ -12,10 +12,10 @@ function createData(name, value) {
 }
 
 const rows = [
-  createData('Self consumption rate (%)', 'these data will be provided by ATOS, after the optimization of the grid'),
-  createData('Self sufficiency rate (%)', 0),
-  createData('Reverse power flow (kWh)', 'these data will be provided by ATOS, after the optimization of the grid'),
-  createData('RES % of EV supply', 'these data will be provided by ATOS, after the optimization of the grid'),
+  createData('Self consumption rate (%)', 'At the moment these data are not yet available'),
+  createData('Self sufficiency rate (%)', 'At the moment these data are not yet available'),
+  createData('Reverse power flow (kWh)', 'At the moment these data are not yet available'),
+  createData('RES % of EV supply', 'At the moment these data are not yet available'),
 
 ];
 

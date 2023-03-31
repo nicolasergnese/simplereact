@@ -12,11 +12,11 @@ function createData(name, value) {
 }
 
 const rows = [
-  createData('Self consumption rate (%)', 'these data will be provided by ATOS, after the optimization of the grid'),
-  createData('Self sufficiency rate (%)', 0),
-  createData('Reverse power flow (kWh)', 'these data will be provided by ATOS, after the optimization of the grid'),
-  createData('Flexible energy shifted (kWh)', 'these data will be provided by ATOS, after the optimization of the grid'),
-  createData('Voltage issue (#)', 'these data will be provided by ATOS, after the optimization of the grid')
+  createData('Self consumption rate (%)', 'At the moment these data are not yet available'),
+  createData('Self sufficiency rate (%)', 'At the moment these data are not yet available'),
+  createData('Reverse power flow (kWh)', 'At the moment these data are not yet available'),
+  createData('Flexible energy shifted (kWh)', 'At the moment these data are not yet available'),
+  createData('Voltage issue (#)', 'At the moment these data are not yet available')
 ];
 
 export default function BasicTable({ title }) {

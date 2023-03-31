@@ -86,7 +86,7 @@ export default function CreateChart() {
   return (
     <Box textAlign={"center"} sx= {{marginTop: 5}}>
       <Button variant="contained" onClick={() => {handleSubmitClick()}}> Search</Button>
-    <Box className="Chart"> {/*Components.css*/}
+    <Box className="Chart" sx= {{alignItems: "center",maxHeight:"400px"}}> {/*Components.css*/}
       <Line data={values}></Line>
     </Box>
     </Box>

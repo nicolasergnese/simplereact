@@ -12,9 +12,9 @@ function createData(name, totalNumber, numberAvailable, totalInstalledPower, act
 }
 
 const rows = [
-  createData('End user', 43, 'number of devices that are actually included in the dashboard', 129, 'sum  of the active power of all the devices from SYN'),
-  createData('ASM Headquarter', 5, 'number of devices that are actually included in the dashboard', 0, 'sum  of the active power of all the devices from SYN'),
-  createData('Total', 'some of the above values', 'some of the above values', 'some of the above values', 'some of the above values'),
+  createData('End user', "At the moment these data are not yet available", "At the moment these data are not yet available", 'N/A', "At the moment these data are not yet available"),
+  createData('ASM Headquarter', 5, "At the moment these data are not yet available", "N/A", "At the moment these data are not yet available"),
+  createData('Total', "N/A", "N/A", "N/A", "N/A"),
 ];
 
 export default function BasicTable() {

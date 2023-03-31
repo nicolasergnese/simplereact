@@ -12,9 +12,9 @@ function createData(name, totalNumber, forecast, optimization) {
 }
 
 const rows = [
-  createData('ASM Headquarter', 5, 'number of devices that are actually included in the dashboard', ''),
-  createData('Grid asset', 30, '', 'number of lines for which axtually exist the optimized data'),
-  createData('Total', 35, 'number of devices that are actually included in the dashboard', 'number of lines for which axtually exist the optimized data'),
+  createData('ASM Headquarter', 5, "At the moment these data are not yet available", ''),
+  createData('Grid asset', "At the moment these data are not yet available", '', 'At the moment these data are not yet available'),
+  createData('Total', "N/A", 'At the moment these data are not yet available', 'At the moment these data are not yet available'),
 ];
 
 export default function BasicTable() {

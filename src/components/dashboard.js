@@ -88,26 +88,40 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}> {/* home */}
-        <Typography variant="h5"
-          sx={{ marginTop: "40px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Grid 1 main parameters
-        </Typography>
-        <TableHomeGrid1 title={'Value'} />
-        <Typography variant="h5"
-          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Grid 2 main parameters
-        </Typography>
-        <TableHomeGrid2 />
-        <Typography variant="h5"
-          sx={{ marginTop: "30px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Data Source
-        </Typography>
-        <TableDataSource />
-        <Typography variant="h5"
-          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Services
-        </Typography>
-        <TableServices />
+        <Box>
+          
+            <Box sx={{ width: '48%', float: 'left', minHeight:"45vh"}}>
+              <Typography variant="h5"
+                sx={{ color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                Grid 1 main parameters
+              </Typography>
+              <TableHomeGrid1 title={'Value'} />
+            </Box>
+            <Box sx={{ width: '48%', float: 'right',minHeight:"45vh" }}>
+              <Typography variant="h5"
+                sx={{ color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                Grid 2 main parameters
+              </Typography>
+              <TableHomeGrid2 />
+            </Box>
+         
+   
+            <Box sx={{ width: '48%', float: 'left' }}>
+              <Typography variant="h5"
+                sx={{ color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                Data Source
+              </Typography>
+              <TableDataSource />
+            </Box>
+            <Box sx={{ width: '48%', float: 'right' }}>
+              <Typography variant="h5"
+                sx={{ color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                Services
+              </Typography>
+              <TableServices />
+            </Box>
+          
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={1}> {/* historical data */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}> {/* sub dashboard historical data */}
@@ -120,25 +134,28 @@ export default function BasicTabs() {
           <SelectEndUser />
           <Typography variant="h5"
             sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Historical data
+            Historical data 
           </Typography>
           <Box className="Inline">
-            <DateAndTime label = "Start date/time" setValueDate = {setValueDate}/>
-            <DateAndTime label = "End date/time" setValueDate = {setValueDate} />
+            <DateAndTime label="Start date/time" setValueDate={setValueDate} />
+            <DateAndTime label="End date/time" setValueDate={setValueDate} />
           </Box>
           <Chart />
         </TabPanel>
         <TabPanel value={valuesub} index={1}> {/* asm hq */}
+        
           <SelectForecastedAndASMHQ />
           <Typography variant="h5"
             sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
             Historical data
           </Typography>
           <Box className="Inline">
-            <DateAndTime label = "Start date/time" setValueDate = {setValueDate}/>
-            <DateAndTime label = "End date/time" setValueDate = {setValueDate}/>
+            <DateAndTime label="Start date/time" setValueDate={setValueDate} />
+            <DateAndTime label="End date/time" setValueDate={setValueDate} />
           </Box>
+          
           <Chart />
+          
         </TabPanel>
       </TabPanel>
       <TabPanel value={value} index={2}> {/* forecast data*/}
@@ -156,8 +173,8 @@ export default function BasicTabs() {
           Optimized trend (Data are not available)
         </Typography>
         <Box className="Inline">
-          <DateAndTime label = "Start date/time" setValueDate = {setValueDate}/>
-          <DateAndTime label = "End date/time" setValueDate = {setValueDate}/>
+          <DateAndTime label="Start date/time" setValueDate={setValueDate} />
+          <DateAndTime label="End date/time" setValueDate={setValueDate} />
         </Box>
         <Chart />
       </TabPanel>
