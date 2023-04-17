@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Chart as ChartJS, Title, Tooltip, LineElement, Legend, CategoryScale, LinearScale, PointElement } from 'chart.js';
 import { Line } from 'react-chartjs-2';//grafico che voglio
 import Box from '@mui/material/Box';
@@ -41,12 +41,12 @@ export default function CreateChart() {
 
   console.log(values.datasets[0].data) //stampo valore data
 
-  function addData(values, label, data) {
-    values.labels.push(label);
+ /*  function addData(values, label, data) {
+    //values.labels.push(label);
     values.datasets.forEach((dataset) => {
       dataset.data.push(data);
     });
-  }
+  } */
 
   function newChart() {
     setValues({ //funzione bottone per cambiare grafico

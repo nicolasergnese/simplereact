@@ -7,16 +7,16 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 export default function DateTimePickerValue({label, setValueDate}) {
 
-  const [value, setValue] = useState(dayjs('2023-05-10T03:24:00'));
+  const [value, setValue] = useState(dayjs(new Date()));
 
-  console.log(value);
+  console.log(value); //stampo data attuale
 
   
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     //console.log(dayjs().get);
-    setValue(dayjs(newValue));
+    setValue(newValue);
     //console.log(value);
-    setValueDate(dayjs(newValue));
+    setValueDate(newValue);
     //console.log(dayjs().get);
   };
 
