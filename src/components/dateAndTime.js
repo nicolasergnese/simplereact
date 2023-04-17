@@ -16,7 +16,7 @@ export default function DateTimePickerValue({label, setValueDate}) {
     //console.log(dayjs().get);
     setValue(newValue);
     //console.log(value);
-    setValueDate(newValue);
+    //setValueDate(newValue);
     //console.log(dayjs().get);
   };
 
