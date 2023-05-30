@@ -1,13 +1,15 @@
 import axios from 'axios';
-import config from "./global"
 
-const API_URL = config.host+"/chart/";
+const configetichetta = {host:"https://emotion-projects.eu/marketplace"}
+const API_URL = configetichetta.host+"/request/";
 
-class ChartService {
-    async chart(data) {
-        const response = await axios.post(API_URL + "chart", data).then(response => {
+
+class etichettaService {
+    async request(data) {
+        const response = await axios.post(API_URL + "request", data).then(response => {
             console.log(response);
             return response;
+
         }).catch(error => {
             //handle error
             console.log(error);
@@ -24,4 +26,4 @@ class ChartService {
     };
 }
 
-export default new ChartService();
+export default new etichettaService();

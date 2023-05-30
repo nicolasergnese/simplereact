@@ -5,24 +5,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-import axios from 'axios';
-
 export default function DateTimePickerValue({label, setValueDate}) {
 
-  const [value, setValue] = useState(dayjs(new Date()));
+  const [value, setValue] = useState(Math.floor(new Date().getTime()/1000.0));
 
   console.log(value); //stampo data attuale
-
-  const sendDataToBackend = async () => {
-    try {
-      const response = await axios.post('/api/myEndpoint', { value });
-      // Gestisci la risposta del server
-      console.log(value)
-    } catch (error) {
-      // Gestisci l'errore della richiesta
-    }
-  }; 
-
+  console.log(Math.floor(new Date().getTime()/1000.0))
 
   
   const handleChange = (newValue) => {
@@ -31,7 +19,6 @@ export default function DateTimePickerValue({label, setValueDate}) {
     console.log(newValue.Date);
     //setValueDate(newValue);
     //console.log(dayjs().get);
-    sendDataToBackend(newValue)
   };
 
 
@@ -47,6 +34,3 @@ export default function DateTimePickerValue({label, setValueDate}) {
     </LocalizationProvider>
   );
 }
-
-
-

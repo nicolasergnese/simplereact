@@ -1,13 +1,14 @@
 import axios from 'axios';
 import config from "./global"
 
-const API_URL = config.host+"/chart/";
+const API_URL = config.host+"/?/";
 
-class ChartService {
-    async chart(data) {
-        const response = await axios.post(API_URL + "chart", data).then(response => {
+class TableWalletService {
+    async offers(data) {//?
+        const response = await axios.get(API_URL + "?", data).then(response => {
             console.log(response);
             return response;
+
         }).catch(error => {
             //handle error
             console.log(error);
@@ -24,4 +25,4 @@ class ChartService {
     };
 }
 
-export default new ChartService();
+export default new TableWalletService();
