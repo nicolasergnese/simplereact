@@ -49,9 +49,12 @@ export default function CreateChart() {
     }
   };
 
-  useEffect(() => { //Per evitare la duplicazione della stampa, utilizzo useEffect che si attiva solo quando power cambia. 
+ /*  useEffect(() => { //Per evitare la duplicazione della stampa, utilizzo useEffect che si attiva solo quando power cambia. 
     //console.log(power);
-  }, [power]);
+    newChart()
+  }, [power]); */
+
+  
 
   const sendSelectBackend = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
     //console.log("send data")
@@ -193,7 +196,7 @@ export default function CreateChart() {
   }
   
 
-  function newChart() {
+   function newChart() {
     changeLabels();
     setChart({ //funzione bottone per cambiare grafico
       labels: dateTime, // asse x
@@ -213,7 +216,7 @@ export default function CreateChart() {
     })
     //console.log(dateTime)
     //console.log(numbers)
-  }
+  } 
 
   const handleSubmitClick = async () => { //funzione per riempire il charter con il bottone search
     try {
@@ -258,9 +261,12 @@ export default function CreateChart() {
     }
   }
 
+  useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
+    newChart();
+  }, [numbers, dateTime, power, newChart]);
+
+
   
-
-
 
   return (
     <Box sx={{ minWidth: 60 }}> {/*box per la prima select, menu a tendina, meter */}
