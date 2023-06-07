@@ -11,6 +11,8 @@ export default function DateTimePickerValue({label, setValueDate}) {
 
   const [value, setValue] = useState(dayjs(new Date()));
 
+  //console.log(Math.floor(new Date().getTime()/1000.0))//valora data in epoch
+
   console.log(value); //stampo data attuale
 
   const sendDataToBackend = async () => {

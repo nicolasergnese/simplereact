@@ -35,7 +35,7 @@ export default function BottomAppBar({open}) {
                     <Grid style={{padding:"8px",alignItems:"center"}} container spacing={2}>
                         <Grid item xs={12} md={4}>
                             <Typography  variant="body2" component="div" >
-                                <p>Copyright MATRYCS Consortium @2022 All rights reserved</p>
+                                Copyright MATRYCS Consortium @2022 All rights reserved
                             </Typography>
                         </Grid>
                         <Grid item xs={12} md={1}>
@@ -45,7 +45,7 @@ export default function BottomAppBar({open}) {
                         </Grid>
                         <Grid item xs={12} md={7}>
                             <Typography  variant="body2" component="div" >
-                                <p>Co-funded by the Horizon 2020 Framework Programme of the European Union Under grant agreement No 101000158</p>
+                                Co-funded by the Horizon 2020 Framework Programme of the European Union Under grant agreement No 101000158
                             </Typography>
                         </Grid>
                     </Grid>

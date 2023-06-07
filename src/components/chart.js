@@ -7,10 +7,6 @@ import Button from '@mui/material/Button';
 import './Components.css';
 
 
-import ChartService from '../services/chartServices';
-import ChartDateTimeService from '../services/chartDateTimeServices'
-
-
 ChartJS.register(
   Title, Tooltip, LineElement, Legend,
   CategoryScale, LinearScale, PointElement
@@ -77,7 +73,7 @@ export default function CreateChart() {
   }
 
 const handleSubmitClick = (e) => { //ci devo mettere le date?, a quale bottone?, per cambiare evento, cioè grafico
-    console.log("send data")
+   /*  console.log("send data")
     //e.preventDefault();
     const payload = {
       "labels": values.labels,
@@ -93,17 +89,17 @@ const handleSubmitClick = (e) => { //ci devo mettere le date?, a quale bottone?,
           setValues({
             ...values,
             successMessage: response.data.message,
-          }) */
+          }) 
       })
       .catch(function (error) {
         console.log(error);
         /*  setValues({
            ...values,
            successMessage: "errors",
-         }) */
+         }) 
         //props.showError("Username does not exists");
       });
-    newChart();
+    newChart(); */
   }
 
   console.log(numbers)

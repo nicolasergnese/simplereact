@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import SelectChargingSationId from './selectChargingStationId'
+import SelectChargingSationId from './select/selectChargingStationId'
 import Button from '@mui/material/Button';
 import Card from './card'
 import TableOffers from './table/tableOffers'
@@ -24,19 +24,19 @@ import TableDataSource from './table/tableDataSource'
 import TableServices from './table/tableServices'
 import TableRichieste from './table/tableRichieste'
 
-import SelectASMHQ from './selectASMHQ' //importo menu tendina per asmhq
-import SelectForecasted from './selectForecasted' //importo menu tendina per forecast
-import SelectOptimized from './selectOptimized'   //importo menu tendina per optimized
-import SelectEndUser from './selectEndUser'       //importo menu tendina per end user, sub dashboard
+import SelectForecasted from './select/selectForecasted' //importo menu tendina per forecast
+import SelectOptimized from './select/selectOptimized'   //importo menu tendina per optimized
+import SelectEndUser from './select/selectEndUser'       //importo menu tendina per end user, sub dashboard
 
 import Chart from './chart' //importo chart
 
 import DateAndTime from './dateAndTime' //importo data e orario per gli chart
-import DateAndTimeEpoch from './dateAndTimeEpoch'
+
+import ASMHQ from './ASMHQ'
+
 
 import './Components.css';
 
-import EtichettaService from '../services/etichettaServices';
 
 
 function TabPanel(props) {
@@ -93,35 +93,6 @@ export default function BasicTabs() {
     setValueSub(newValue);
   };
 
-const [energy, setEnergy] = useState([])
-const [maxprice, setMaxprice] = useState([])
-const [chargingstationID, setChargingstationID] = useState([])
-
-const handleSubmitClick = (e) => { //questo metodo o fetch?
-  console.log("send data")
-  //e.preventDefault();
-  const payload = {
-    "start": valueDateStart,
-    "end": valueDateEnd,
-    "energy": value,
-    "maxprice":value,
-    "chargingstationID":value,
-  }
-  EtichettaService.request(payload)
-    .then((response) => {
-      console.log(response);
-      setValueDateStart(response.data)
-      setValueDateEnd(response.data)
-      setEnergy(response.data)
-      setMaxprice(response.data)
-      setChargingstationID(response.data)
-      console.log(response.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}  
-
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -134,28 +105,30 @@ const handleSubmitClick = (e) => { //questo metodo o fetch?
           <Tab label="DSO Dashboard" {...a11yProps(4)} />
         </Tabs>
       </Box>
+
       <TabPanel value={value} index={0}> {/* home */}
         <Typography variant="h5"
           sx={{ marginTop: "40px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Grid 1 main parameters
         </Typography>
-        <TableHomeGrid1 title={'Value'} />
+        <TableHomeGrid1 title={'Value'} /> {/*components table*/ }
         <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Grid 2 main parameters
         </Typography>
-        <TableHomeGrid2 />
+        <TableHomeGrid2 /> {/*components table*/ }
         <Typography variant="h5"
           sx={{ marginTop: "30px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Data Source
         </Typography>
-        <TableDataSource />
+        <TableDataSource /> {/*components table*/ }
         <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Services
         </Typography>
-        <TableServices />
+        <TableServices /> {/*components table*/ }
       </TabPanel>
+
       <TabPanel value={value} index={1}> {/* historical data */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}> {/* sub dashboard historical data */}
           <Tabs value={valuesub} onChange={handleChange1} aria-label="basic example">
@@ -163,41 +136,36 @@ const handleSubmitClick = (e) => { //questo metodo o fetch?
             <Tab label="ASM HQ" {...a11yProps(1)} />
           </Tabs>
         </Box>
+
         <TabPanel value={valuesub} index={0}>  {/* end user */}
-          <SelectEndUser />
+          <SelectEndUser /> {/*components select*/ }
           <Typography variant="h5"
             sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
             Historical data
           </Typography>
           <Box className="Inline">
-            <DateAndTime label="Start date/time" setValueDate={setValueDate} />
-            <DateAndTime label="End date/time" setValueDate={setValueDate} />
+            <DateAndTime label="Start date/time" setValueDate={setValueDate} /> {/*components*/ }
+            <DateAndTime label="End date/time" setValueDate={setValueDate} />   {/*components*/ }
           </Box>
-          <Chart />
+          <Chart /> {/*components*/ }
         </TabPanel>
+
         <TabPanel value={valuesub} index={1}> {/* asm hq */}
-          <SelectASMHQ />
-          <Typography variant="h5"
-            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Historical data
-          </Typography>
-          <Box className="Inline">
-            <DateAndTime label="Start date/time" setValueDate={setValueDate} />
-            <DateAndTime label="End date/time" setValueDate={setValueDate} />
-          </Box>
-          <Chart />
+          <ASMHQ /> {/*components*/ }
         </TabPanel>
       </TabPanel>
+
       <TabPanel value={value} index={2}> {/* forecast data*/}
-        <SelectForecasted />
+        <SelectForecasted /> {/*components select*/ }
         <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Forecasted data (At the moment these data are not yet available)
         </Typography>
-        <Chart />
+        <Chart />{/*components*/ }
       </TabPanel>
+
       <TabPanel value={value} index={3}> {/* optimized data */}
-        <SelectOptimized />
+        <SelectOptimized /> {/*components select*/ }
         <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Optimized trend (Data are not available)
@@ -206,7 +174,7 @@ const handleSubmitClick = (e) => { //questo metodo o fetch?
           <DateAndTime label="Start date/time" setValueDate={setValueDate} />
           <DateAndTime label="End date/time" setValueDate={setValueDate} />
         </Box>
-        <Chart />
+        <Chart />{/*components*/ }
       </TabPanel>
       <TabPanel value={value} index={4}> {/* componenti nuovi */}
       <Box className="Inline">
@@ -279,7 +247,7 @@ const handleSubmitClick = (e) => { //questo metodo o fetch?
                 sx={{ marginTop: "20px", color: "#000000", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>Charging Sation ID:</Typography>
               <SelectChargingSationId /> {/* aggiornare lista */}
             </Box>
-            <Button onClick={() => { handleSubmitClick() }} sx={{ marginTop: "20px", marginLeft: "250px" }} variant="contained">Submit</Button>
+            <Button onClick={() => { }} sx={{ marginTop: "20px", marginLeft: "250px" }} variant="contained">Submit</Button>
           </Paper>
         </Box>
         <TableRichieste />
