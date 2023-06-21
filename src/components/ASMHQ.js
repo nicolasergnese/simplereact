@@ -158,45 +158,45 @@ export default function CreateChart() {
 
   const changeLabels = () => {
     if(power==='Power_P_1_7_0_W2.CV') {
-      setLabelCharter('Active power [Watt]')
+      setLabelCharter('Active power [kW]')
     }
     else if(power==='Power_Q_3_7_0_W2.CV') {
-      setLabelCharter('Reactive power [VaR]')
+      setLabelCharter('Reactive power [kVAR]')
     }
     else if(power==='Power_S_9_7_0_W2.CV') {
-      setLabelCharter('Apparent power [Volt Ampere]')
+      setLabelCharter('Apparent power [kVA]')
     }
     else if(power==='Power_P_1_7_0_W4.CV') {
-      setLabelCharter('Potenza attiva [Watt]')
+      setLabelCharter('Active power [kW]')
     }
     else if(power==='Power_Q_3_7_0_W4.CV') {
-      setLabelCharter('Reactive power [VaR]')
+      setLabelCharter('Reactive power [kVAR]')
     }
     else if(power==='Power_S_9_7_0_W4.CV') {
-      setLabelCharter('Reactive power [Volt Ampere]')
+      setLabelCharter('Apparent power [kVA]')
     }
     else if(power==='Power_P_1_7_0_W5.CV') {
-      setLabelCharter('Active power [Watt]')
+      setLabelCharter('Active power [kW]')
     }
     else if(power==='Power_Q_3_7_0_W5.CV') {
-      setLabelCharter('Reactive power [VaR]')
+      setLabelCharter('Reactive power [kVAR]')
     }
     else if(power==='Power_S_9_7_0_W5.CV') {
-      setLabelCharter('Apparent power [Volt Ampere]')
+      setLabelCharter('Apparent power [kVA]')
     }
     else if(power==='Power_P_1_7_0_W6.CV') {
-      setLabelCharter('Active power [Watt]')
+      setLabelCharter('Active power [kW]')
     }
     else if(power==='Power_Q_3_7_0_W6.CV') {
-      setLabelCharter('Reactive power [VaR]')
+      setLabelCharter('Reactive power [kVAR]')
     }
     else if(power==='Power_S_9_7_0_W6.CV') {
-      setLabelCharter('Apparent power [Volt Ampere]')
+      setLabelCharter('Apparent power [kVA]')
     }
   }
   
 
-   function newChart() {
+  function newChart() {
     changeLabels();
     setChart({ //funzione bottone per cambiare grafico
       labels: dateTime, // asse x
@@ -214,9 +214,8 @@ export default function CreateChart() {
         },
       ],
     })
-    //console.log(dateTime)
-    //console.log(numbers)
   } 
+
 
   const handleSubmitClick = async () => { //funzione per riempire il charter con il bottone search
     try {
@@ -228,11 +227,12 @@ export default function CreateChart() {
       });
       if (response.ok) {
         const responseData = await response.json();
+        //console.log(responseData)
         let tempDateTime = [];
         let tempValue = [];
         responseData.forEach((element) => {
-          tempDateTime.push(element.DateTime); // Accesso al valore DateTime per ogni elemento
-          tempValue.push(element.Value);
+          tempDateTime.push(element.DATETIME); // Accesso al valore DateTime per ogni elemento
+          tempValue.push(element.VALUE);
           //console.log(responseData);
         });
         //console.log(tempValue)
@@ -260,6 +260,7 @@ export default function CreateChart() {
       return errorResponse;
     }
   }
+  
 
   useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
     newChart();
@@ -273,10 +274,10 @@ export default function CreateChart() {
       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
         <InputLabel id="demo-simple-select-label">Meter</InputLabel>
         <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={meter} onChange={handleSelect1Change}>
-          <MenuItem value="opzione1">W2</MenuItem>{/*definisco i sensori */}
-          <MenuItem value="opzione2">W4</MenuItem>
-          <MenuItem value="opzione3">W5</MenuItem>
-          <MenuItem value="opzione4">W6</MenuItem>
+          <MenuItem value="opzione1">aggregated PV and EV charging station</MenuItem>{/*definisco i sensori */}
+          <MenuItem value="opzione2">ASM headquarters</MenuItem>
+          <MenuItem value="opzione3">EV charging station Fast</MenuItem>
+          <MenuItem value="opzione4">PV plant 185 KW</MenuItem>
         </Select>
       </FormControl>
       <Box> {/*box per la seconda select, menu a tendina, power */}
@@ -285,24 +286,24 @@ export default function CreateChart() {
           <Select labelId="demo-simple-select-label" id="demo-simple-select-power" value={power} onChange={(event) => setPower(event.target.value)}>
             <MenuItem value="">Select meter</MenuItem> {/*questa è logica per associare ad ogni sensore il proprio tagname */}
             {meter === 'opzione1' && [ 
-              <MenuItem key="valore1" value="Power_P_1_7_0_W2.CV">Power P (Potenza attiva [Watt])</MenuItem>,
-              <MenuItem key="valore2" value="Power_Q_3_7_0_W2.CV">Power Q (Potenza reattiva [VaR])</MenuItem>,
-              <MenuItem key="valore3" value="Power_S_9_7_0_W2.CV">Power S (Potenza apparente [Volt Ampere])</MenuItem>
+              <MenuItem key="valore1" value="Power_P_1_7_0_W2.CV">Active power [kW]</MenuItem>,
+              <MenuItem key="valore2" value="Power_Q_3_7_0_W2.CV">Reactive power [kVAR]</MenuItem>,
+              <MenuItem key="valore3" value="Power_S_9_7_0_W2.CV">Apparent power [kVA]</MenuItem>
             ]}
             {meter === 'opzione2' && [
-              <MenuItem key="valore4" value="Power_P_1_7_0_W4.CV">Power P (Potenza attiva [Watt])</MenuItem>,
-              <MenuItem key="valore5" value="Power_Q_3_7_0_W4.CV">Power Q (Potenza reattiva [VaR])</MenuItem>,
-              <MenuItem key="valore6" value="Power_S_9_7_0_W4.CV">Power S (Potenza apparente [Volt Ampere])</MenuItem>
+              <MenuItem key="valore4" value="Power_P_1_7_0_W4.CV">Active power [kW]</MenuItem>,
+              <MenuItem key="valore5" value="Power_Q_3_7_0_W4.CV">Reactive power [kVAR]</MenuItem>,
+              <MenuItem key="valore6" value="Power_S_9_7_0_W4.CV">Apparent power [kVA]</MenuItem>
             ]}
             {meter === 'opzione3' && [
-              <MenuItem key="valore7" value="Power_P_1_7_0_W5.CV">Power P (Potenza attiva [Watt])</MenuItem>,
-              <MenuItem key="valore8" value="Power_Q_3_7_0_W5.CV">Power Q (Potenza reattiva [VaR])</MenuItem>,
-              <MenuItem key="valore9" value="Power_S_9_7_0_W5.CV">Power S (Potenza apparente [Volt Ampere])</MenuItem>
+              <MenuItem key="valore7" value="Power_P_1_7_0_W5.CV">Active power [kW]</MenuItem>,
+              <MenuItem key="valore8" value="Power_Q_3_7_0_W5.CV">Reactive power [kVAR]</MenuItem>,
+              <MenuItem key="valore9" value="Power_S_9_7_0_W5.CV">Apparent power [kVA]</MenuItem>
             ]}
             {meter === 'opzione4' && [
-              <MenuItem key="valore10" value="Power_P_1_7_0_W6.CV">Power P (Potenza attiva [Watt])</MenuItem>,
-              <MenuItem key="valore11" value="Power_Q_3_7_0_W6.CV">Power Q (Potenza reattiva [VaR])</MenuItem>,
-              <MenuItem key="valore12" value="Power_S_9_7_0_W6.CV">Power S (Potenza apparente [Volt Ampere])</MenuItem>
+              <MenuItem key="valore10" value="Power_P_1_7_0_W6.CV">Active power [kW]</MenuItem>,
+              <MenuItem key="valore11" value="Power_Q_3_7_0_W6.CV">Reactive power [kVAR]</MenuItem>,
+              <MenuItem key="valore12" value="Power_S_9_7_0_W6.CV">Apparent power [kVA]</MenuItem>
             ]}
           </Select>
         </FormControl>
