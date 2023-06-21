@@ -6,23 +6,11 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 
-import Paper from '@mui/material/Paper';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import SelectChargingSationId from './select/selectChargingStationId'
-import Button from '@mui/material/Button';
-import Card from './card'
-import TableOffers from './table/tableOffers'
-import TableWallet from './table/tableWallet'
-import ProgressBar from './progressBar'
-
-
 import TableHomeGrid1 from './table/tableGrid1' //import table
 import TableHomeGrid2 from './table/tableGrid2'
 import TableDataSource from './table/tableDataSource'
 import TableServices from './table/tableServices'
-import TableRichieste from './table/tableRichieste'
+
 
 import SelectForecasted from './select/selectForecasted' //importo menu tendina per forecast
 import SelectOptimized from './select/selectOptimized'   //importo menu tendina per optimized
@@ -78,8 +66,6 @@ export default function BasicTabs() {
   const [value, setValue] = useState(0);
   const [valuesub, setValueSub] = useState(0);
   const [setValueDate] = useState();
-  const [valueDateStart, setValueDateStart] = useState();
-  const [valueDateEnd, setValueDateEnd] = useState();
 
 
   const handleChange = (event, newValue) => {

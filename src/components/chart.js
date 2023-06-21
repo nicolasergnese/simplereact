@@ -15,7 +15,6 @@ ChartJS.register(
 
 export default function CreateChart() {
   let valori = []; //per generare numeri casuali, ma non s come metterli
-  let today = new Date();
   let timestap = [];
   /* function arrayNumeriCasuali(numeriCasuali) {
     for (let i = 0; i < 50; i++) { //riempio array
@@ -25,7 +24,7 @@ export default function CreateChart() {
     }
   } */
   //arrayNumeriCasuali();
-  const [values, setValues] = useState({
+  const [values] = useState({
     labels: timestap, // asse x
     datasets: [
       {
@@ -51,9 +50,9 @@ export default function CreateChart() {
      });
    } */
 
-   const [numbers, setNumbers] = useState([])
+   const [numbers] = useState([])
 
-  function newChart() {
+ /*  function newChart() {
     setValues({ //funzione bottone per cambiare grafico
       labels: numbers, // asse x
       datasets: [
@@ -70,7 +69,7 @@ export default function CreateChart() {
         },
       ],
     })
-  }
+  } */
 
 const handleSubmitClick = (e) => { //ci devo mettere le date?, a quale bottone?, per cambiare evento, cioè grafico
    /*  console.log("send data")

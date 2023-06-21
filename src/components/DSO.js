@@ -187,9 +187,9 @@ export default function CreateDsoDahsboard() {
       };
       
 
-    const [startDateRequest, setStartDateRequest] = useState('');
+    const [ setStartDateRequest] = useState('');
 
-    const [rowsRequest, setRowsRequest] = useState([]);
+    const [ rowsRequest, setRowsRequest] = useState([]);
     const tablerequest = async () => {
         try {
             const response = await fetch("http://localhost:8080/api/tablerequeststart", {
@@ -199,7 +199,6 @@ export default function CreateDsoDahsboard() {
                 },
             });
             if (response.ok) {
-                setRowsRequest([]);
                 setRows([]);
                 const responseData = await response.json(); //prendo lista offers
                 //console.log(responseData);
@@ -209,16 +208,14 @@ export default function CreateDsoDahsboard() {
                     const tempRequestID = request.id;
                     const tempDateEnd = request.deadline;
                     const extraValues = request.extra;
-                    const startRequest = extraValues[1];
                     const endRequest = tempDateEnd;
                     const energyRequest = extraValues[0];
                     const startDateRequest = new Date(extraValues[1] * 1000);
                     const formattedStartDateRequest = startDateRequest.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
-                    setStartDateRequest(formattedStartDateRequest);
                     //console.log(request.id);
                     //console.log(startRequest);
-                    addRowRequest(tempRequestID, startDateRequest, endRequest, energyRequest);
-                    addRowRequestNew(tempRequestID, startDateRequest, endRequest, energyRequest);
+                    addRowRequest(tempRequestID, formattedStartDateRequest, endRequest, energyRequest);
+                    addRowRequestNew(tempRequestID, formattedStartDateRequest, endRequest, energyRequest);
                     console.log('tablerequeststart')
                 });
                 return responseData;
@@ -260,14 +257,13 @@ export default function CreateDsoDahsboard() {
                     const tempRequestID = request.id;
                     const tempDateEnd = request.deadline;
                     const extraValues = request.extra;
-                    const startRequest = extraValues[1];
                     const endRequest = tempDateEnd;
                     const energyRequest = extraValues[0];
-                    const startDateRequest = new Date(extraValues[1] * 1000);
-  const formattedStartDateRequest = startDateRequest.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
+                    const startDate = new Date(extraValues[1] * 1000);
+  const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
                     //console.log(request.id);
                     //console.log(startRequest);
-                    addRowRequestNew(tempRequestID, formattedStartDateRequest, endRequest, energyRequest);
+                    addRowRequestNew(tempRequestID, formattedStartDate, endRequest, energyRequest);
                 });
                 return responseData;
             } else {
