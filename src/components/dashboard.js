@@ -33,6 +33,7 @@ import Chart from './chart' //importo chart
 import DateAndTime from './dateAndTime' //importo data e orario per gli chart
 
 import ASMHQ from './ASMHQ'
+import DSO  from './DSO'
 
 
 import './Components.css';
@@ -177,123 +178,7 @@ export default function BasicTabs() {
         <Chart />{/*components*/ }
       </TabPanel>
       <TabPanel value={value} index={4}> {/* componenti nuovi */}
-      <Box className="Inline">
-        <Typography variant="h5"
-          sx={{ marginTop: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Creazione di una richiesta di flessibilità energetica
-        </Typography>
-        <Typography variant="h5"
-          sx={{ marginTop: "20px",marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Visualizzazione delle richieste
-        </Typography>  
-        </Box>
-        <Box className="Inline">
-        <Box //figura 1, etichetta con dateandtime e select
-          sx={{
-            display: 'flex',
-            '& > :not(style)': {
-              m: 1,
-              width: 400,
-              height: 450,
-              backgroundColor: "#d3d3d3"
-            },
-          }}
-        >
-          <Paper variant="outlined">
-            <Box className="Inline">
-              <Typography variant="h5"
-                sx={{ marginTop: "20px", color: "#000000", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>Start:</Typography>
-              <DateAndTime setValueDateStart={setValueDateStart}  />
-            </Box>
-            <Box className="Inline">
-              <Typography variant="h5"
-                sx={{ marginTop: "20px", color: "#000000", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>End:</Typography>
-              <DateAndTime setValueDateEnd={setValueDateEnd} />
-            </Box>
-            <Box
-              component="form"
-              sx={{
-                '& .MuiTextField-root': { m: 1, width: '25ch' },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-            </Box>
-            <Box className="Inline">
-              <Typography variant="h5"
-                sx={{ marginTop: "20px", color: "#000000", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>Energy:</Typography>
-
-              <FormControl sx={{ m: 1, width: '25ch', backgroundColor: "white" }} variant="outlined">
-                <OutlinedInput
-                  id="outlined-adornment-weight"
-                  endAdornment={<InputAdornment position="end">Wh</InputAdornment>}
-                  aria-describedby="outlined-weight-helper-text"
-                />
-              </FormControl>
-            </Box>
-            <Box className="Inline">
-              <Typography variant="h5"
-                sx={{ marginTop: "20px", color: "#000000", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>MaxPrice:</Typography>
-              <FormControl sx={{ m: 1, width: '25ch', backgroundColor: "white"}} variant="outlined">
-                <OutlinedInput
-                  id="outlined-adornment-weight"
-                  endAdornment={<InputAdornment position="end">Token</InputAdornment>}
-                  aria-describedby="outlined-weight-helper-text"
-                />
-              </FormControl>
-            </Box>
-            <Box className="Inline">
-              <Typography variant="h5"
-                sx={{ marginTop: "20px", color: "#000000", fontFamily: "Poppins, Roboto", fontSize: "20px", fontWeight: 700 }}>Charging Sation ID:</Typography>
-              <SelectChargingSationId /> {/* aggiornare lista */}
-            </Box>
-            <Button onClick={() => { }} sx={{ marginTop: "20px", marginLeft: "250px" }} variant="contained">Submit</Button>
-          </Paper>
-        </Box>
-        <TableRichieste />
-        </Box>
-
-        <Typography variant="h5"
-          sx={{ marginTop: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Visualizzazione del portafoglio in token del DSO 
-        </Typography> 
-        <TableWallet /> {/* quarta figura, tabella, wallet */}
-
-        <Box className="Inline" style={{marginTop: "20px"}}>
-        <Typography variant="h5"
-          sx={{ marginTop: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-           Visualizzazione dei dettagli di una richiesta di flessibilità creata
-        </Typography> 
-        <Typography variant="h5"
-          sx={{ marginTop: "20px",marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Visualizzazione delle offerte ricevute per la richiesta di flessibilità creata 
-        </Typography> 
-        </Box>
-
-        <Box className="Inline" style={{marginTop: "20px"}}>
-
-          <Card /> {/* seconda figura, etichetta */}
-
-          <TableOffers /> {/* terza figura, tabella */}
-        </Box>
-
-        <Box sx={{ marginLeft: "20px" }}> {/* quinta figura, bottoni */}
-        <Typography variant="h5"
-          sx={{ marginTop: "20px",marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            I pulsanti per: chiudere l’asta e far vincere l’offerta migliore, sbloccare il pagamento a seguito della fornitura di flessibilità  
-        </Typography> 
-
-          <Button sx={{ marginTop: "20px" }} variant="contained">Get Winning Offer</Button>
-          <Button sx={{ marginTop: "20px", marginLeft: "20px" }} variant="contained">Unlock payment</Button>
-
-        </Box>
-        <Typography variant="h5"
-          sx={{ marginTop: "20px",marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Visualizzazione dell’avanzamento della fornitura di flessibilità energetica
-        </Typography> 
-
-
-        <ProgressBar /> {/* sesta figura, progressbar */}
+      <DSO/>
 
       </TabPanel>
     </Box>
