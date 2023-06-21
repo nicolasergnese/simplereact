@@ -603,7 +603,7 @@ export default function CreateDsoDahsboard() {
                                                             <TableBody>
                                                                 {rowsOffer.map((rowOffer) => (
                                                                     <TableRow
-                                                                        key={rowOffer.name}
+                                                                        key={rowOffer.nameTab}
                                                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                                     >
                                                                         <TableCell component="th" scope="row">
