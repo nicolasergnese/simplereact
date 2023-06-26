@@ -27,10 +27,15 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
 
-import ProgressBar from './progressBar'
-
-
 import TablePagination from '@mui/material/TablePagination';
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+
+
+import './Components.css';
 
 
 
@@ -175,21 +180,21 @@ export default function CreateDsoDahsboard() {
 
     const handleChangeRowsPerPage = (event) => {
         const newRowsPerPage = +event.target.value;
-  setRowsPerPage(newRowsPerPage);
-  setPage(0);
+        setRowsPerPage(newRowsPerPage);
+        setPage(0);
     };
     const addRowRequestNew = (requestID, valueStartRequest, valueEndRequest, valueEnergyRequest) => {
         if (requestID !== undefined && valueStartRequest !== undefined && valueEndRequest !== undefined && valueEnergyRequest !== undefined) {
-          const formattedStartRequest = valueStartRequest.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
-          const newRow = createDataRequestNew(requestID, formattedStartRequest, valueEndRequest, valueEnergyRequest);
-          setRows(prevRows => [...prevRows, newRow]);
+            const formattedStartRequest = valueStartRequest.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
+            const newRow = createDataRequestNew(requestID, formattedStartRequest, valueEndRequest, valueEnergyRequest);
+            setRows(prevRows => [...prevRows, newRow]);
         }
-      };
-      
+    };
 
-    const [ setStartDateRequest] = useState('');
 
-    const [ rowsRequest, setRowsRequest] = useState([]);
+    const [setStartDateRequest] = useState('');
+
+    const [rowsRequest, setRowsRequest] = useState([]);
     const tablerequest = async () => {
         try {
             const response = await fetch("http://localhost:8080/api/tablerequeststart", {
@@ -260,7 +265,7 @@ export default function CreateDsoDahsboard() {
                     const endRequest = tempDateEnd;
                     const energyRequest = extraValues[0];
                     const startDate = new Date(extraValues[1] * 1000);
-  const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
+                    const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
                     //console.log(request.id);
                     //console.log(startRequest);
                     addRowRequestNew(tempRequestID, formattedStartDate, endRequest, energyRequest);
@@ -306,6 +311,7 @@ export default function CreateDsoDahsboard() {
     const getWinningOffer = async () => {
         try {
             setRowsOffer([]);
+            startTimer();
             sendDataIDUserToBackend();
             getRequestToBackend();
             fetch('http://localhost:8080/api/offers')
@@ -332,7 +338,11 @@ export default function CreateDsoDahsboard() {
                     });
                     console.log('winnerID:', winnerID);
                     console.log('minExtraValue:', minExtraValue);
-                    alert(`The winner ID is ${winnerID} and the price is ${minExtraValue}`);
+                    setOpen(true)
+                    //alert(`Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}. \n\nTo see the list of offers related to the request ID, click OK`);
+                })
+                .finally(() => {
+                    setProgressBar(100);
                 });
         } catch (error) {
             // handle network error
@@ -426,8 +436,33 @@ export default function CreateDsoDahsboard() {
             return errorResponse;
         }
     };
-
     //fine codice card
+
+    //inizio codice progress bar
+    const [progressBar, setProgressBar] = useState(0);
+
+    const startTimer = () => {
+        const interval = setInterval(() => {
+            setProgressBar(prevProgress => {
+                if (prevProgress < 100) {
+                    return prevProgress + 2;
+                } else {
+                    clearInterval(interval);
+                    return prevProgress;
+                }
+            });
+        }, 50);
+    };
+    //fine codice progressBar
+
+    //inizio codice alertsDialog
+    const [open, setOpen] = React.useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+
 
     useEffect(() => { //per evitare due valori di energy
         //console.log(energyValue) //mi stampa quello che  scrivo in energy
@@ -444,122 +479,128 @@ export default function CreateDsoDahsboard() {
                 sx={{ marginTop: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
                 Creating a demand for energy:
             </Typography>
-
             <Box> {/*qui definisco i due componenti dateAndTime*/}
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                    <LocalizationProvider dateAdapter={AdapterDayjs} >
-                        <DemoContainer components={['DateTimePicker']}> {/*qui definisco il componente dateAndTime  start*/}
-                            <DateTimePicker sx={{ backgroundColor: "white" }}
-                                label="Start date/time"
-                                value={valueStart}
-                                onChange={handleChangeDateAndTimeStart}
+                <Box>
+                    <Box className="classInline">
+                        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                <DemoContainer components={['DateTimePicker']}> {/*qui definisco il componente dateAndTime  start*/}
+                                    <DateTimePicker sx={{ backgroundColor: "white" }}
+                                        label="Start date/time"
+                                        value={valueStart}
+                                        onChange={handleChangeDateAndTimeStart}
+                                    />
+                                </DemoContainer>
+                            </LocalizationProvider>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                <DemoContainer components={['DateTimePicker']}> {/*qui definisco il componente dateAndTime  end*/}
+                                    <DateTimePicker sx={{ backgroundColor: "white", marginTop: "10px" }}
+                                        label="End date/time"
+                                        value={valueEnd}
+                                        onChange={handleChangeDateAndTimeEnd}
+                                    />
+                                </DemoContainer>
+                            </LocalizationProvider>
+                        </FormControl>
+                        <Box> {/*qui definisco il componente energy*/}
+                            <TextField
+                                label="Energy"
+                                id="outlined-start-adornment"
+                                sx={{ m: 1, width: '25ch' }}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">Wh</InputAdornment>,
+                                }}
+                                value={energyValue}
+                                onChange={handleInputChangeEnergy}
                             />
-                        </DemoContainer>
-                    </LocalizationProvider>
-                    <LocalizationProvider dateAdapter={AdapterDayjs} >
-                        <DemoContainer components={['DateTimePicker']}> {/*qui definisco il componente dateAndTime  end*/}
-                            <DateTimePicker sx={{ backgroundColor: "white", marginTop: "10px" }}
-                                label="End date/time"
-                                value={valueEnd}
-                                onChange={handleChangeDateAndTimeEnd}
-                            />
-                        </DemoContainer>
-                    </LocalizationProvider>
-                </FormControl>
-                <Box> {/*qui definisco il componente energy*/}
-                    <TextField
-                        label="Energy"
-                        id="outlined-start-adornment"
-                        sx={{ m: 1, width: '25ch' }}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">Wh</InputAdornment>,
-                        }}
-                        value={energyValue}
-                        onChange={handleInputChangeEnergy}
-                    />
-                    <Box> {/*qui definisco il componente maxPrice*/}
-                        <TextField
-                            label="MaxPrice:"
-                            id="outlined-start-adornment"
-                            sx={{ m: 1, width: '25ch' }}
-                            InputProps={{
-                                endAdornment: <InputAdornment position="end">Token</InputAdornment>,
-                            }}
-                            value={maxPriceValue}
-                            onChange={handleInputChangeMaxPrice}
-                        />
-                        <Box sx={{ minWidth: 60 }}> {/*box per la select, menu a tendina, charging station id */}
-                            <FormControl sx={{ m: 1, width: '25ch' }} size="small">
-                                <InputLabel id="demo-simple-select-label">Charging Station ID</InputLabel>
-                                <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={chargingStationId} onChange={handleSelect1Change}>
-                                    <MenuItem value="opzione1">2</MenuItem>{/*definisco i sensori */}
-                                    <MenuItem value="opzione2">4</MenuItem>
-                                    <MenuItem value="opzione3">5</MenuItem>
-                                    <MenuItem value="opzione4">6</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <Box sx={{ marginLeft: "10px" }}>
-                                <Box>
-                                    <Button onClick={() => { sendDataEnergyValueToBackend(); handleSubmitClick(); }} sx={{ marginTop: "10px", marginLeft: "100px" }} variant="contained">Submit</Button>
-                                    <Box sx={{ marginTop: "20px" }}>
-                                        <Typography variant="h5"
-                                            sx={{ marginTop: "20px", marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-                                            Visualization of requests:
-                                        </Typography>
-                                        <Paper sx={{ width: '800px', overflow: 'hidden' }}>
-                                            <TableContainer sx={{ maxHeight: 440, width: "800px" }} >
-                                                <Table stickyHeader aria-label="sticky table">
-                                                    <TableHead sx={{ backgroundColor: "#7CFC00", fontWeight: 'bold' }}>
-                                                        <TableRow>
-                                                            {columns.map((column) => (
-                                                                <TableCell
-                                                                    key={column.id}
-                                                                    align={column.align}
-                                                                    style={{ minWidth: column.minWidth, backgroundColor: "#7CFC00", fontWeight: 'bold' }}
-                                                                >
-                                                                    {column.label}
-                                                                </TableCell>
-                                                            ))}
-                                                        </TableRow>
-                                                    </TableHead>
-                                                    <TableBody>
-                                                        {rows
-                                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                            .map((rowRequest) => {
-                                                                return (
-                                                                    <TableRow hover role="checkbox" tabIndex={-1} key={rowRequest.request_id}>
-                                                                        {columns.map((column) => {
-                                                                            const value = rowRequest[column.id];
-                                                                            return (
-                                                                                <TableCell key={column.id} align={column.align}>
-                                                                                    {column.format && typeof value === 'number'
-                                                                                        ? column.format(value)
-                                                                                        : value}
-                                                                                </TableCell>
-                                                                            );
-                                                                        })}
-                                                                    </TableRow>
-                                                                );
-                                                            })}
-                                                    </TableBody>
-                                                </Table>
-                                            </TableContainer>
-                                            <TablePagination
-                                                rowsPerPageOptions={[10, 25, 100]}
-                                                component="div"
-                                                count={rows.length}
-                                                rowsPerPage={rowsPerPage}
-                                                page={page}
-                                                onPageChange={handleChangePage}
-                                                onRowsPerPageChange={handleChangeRowsPerPage}
-                                            />
-                                        </Paper>
+                            <Box> {/*qui definisco il componente maxPrice*/}
+                                <TextField
+                                    label="MaxPrice:"
+                                    id="outlined-start-adornment"
+                                    sx={{ m: 1, width: '25ch' }}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">Token</InputAdornment>,
+                                    }}
+                                    value={maxPriceValue}
+                                    onChange={handleInputChangeMaxPrice}
+                                />
+                                <Box sx={{ minWidth: 60 }}> {/*box per la select, menu a tendina, charging station id */}
+                                    <FormControl sx={{ m: 1, width: '25ch' }} size="small">
+                                        <InputLabel id="demo-simple-select-label">Charging Station ID</InputLabel>
+                                        <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={chargingStationId} onChange={handleSelect1Change}>
+                                            <MenuItem value="opzione1">2</MenuItem>{/*definisco i sensori */}
+                                            <MenuItem value="opzione2">4</MenuItem>
+                                            <MenuItem value="opzione3">5</MenuItem>
+                                            <MenuItem value="opzione4">6</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    <Box sx={{ marginLeft: "10px" }}>
                                         <Box>
+                                            <Button onClick={() => { sendDataEnergyValueToBackend(); handleSubmitClick(); }} sx={{ marginTop: "10px", marginLeft: "100px" }} variant="contained">Submit</Button>
+                                            <Box sx={{ marginTop: "20px" }}>
+                                            </Box>
+                                            <Box></Box>
+                                            <Typography variant="h5"
+                                                sx={{ marginTop: "20px", marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                                                Visualization of requests:
+                                            </Typography>
+                                            <Box className="classInline">
+                                                <Paper sx={{ width: '800px', overflow: 'hidden' }}>
+                                                    <TableContainer sx={{ maxHeight: 440, width: "800px" }} >
+                                                        <Table stickyHeader aria-label="sticky table">
+                                                            <TableHead sx={{ backgroundColor: "#7CFC00", fontWeight: 'bold' }}>
+                                                                <TableRow>
+                                                                    {columns.map((column) => (
+                                                                        <TableCell
+                                                                            key={column.id}
+                                                                            align={column.align}
+                                                                            style={{ minWidth: column.minWidth, backgroundColor: "#7CFC00", fontWeight: 'bold' }}
+                                                                        >
+                                                                            {column.label}
+                                                                        </TableCell>
+                                                                    ))}
+                                                                </TableRow>
+                                                            </TableHead>
+                                                            <TableBody>
+                                                                {rows
+                                                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                                    .map((rowRequest) => {
+                                                                        return (
+                                                                            <TableRow hover role="checkbox" tabIndex={-1} key={rowRequest.request_id}>
+                                                                                {columns.map((column) => {
+                                                                                    const value = rowRequest[column.id];
+                                                                                    return (
+                                                                                        <TableCell key={column.id} align={column.align}>
+                                                                                            {column.format && typeof value === 'number'
+                                                                                                ? column.format(value)
+                                                                                                : value}
+                                                                                        </TableCell>
+                                                                                    );
+                                                                                })}
+                                                                            </TableRow>
+                                                                        );
+                                                                    })}
+                                                            </TableBody>
+                                                        </Table>
+                                                    </TableContainer>
+                                                    <TablePagination
+                                                        rowsPerPageOptions={[10, 25, 100]}
+                                                        component="div"
+                                                        count={rows.length}
+                                                        rowsPerPage={rowsPerPage}
+                                                        page={page}
+                                                        onPageChange={handleChangePage}
+                                                        onRowsPerPageChange={handleChangeRowsPerPage}
+                                                    />
+                                                </Paper>
+                                            </Box>
                                             <Box>
-                                                <Typography variant="h5"
-                                                    sx={{ marginTop: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-                                                    Viewing the details of an energy request created:
-                                                </Typography>
+                                                <Box>
+                                                    <Typography variant="h5"
+                                                        sx={{ marginTop: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                                                        Viewing the details of an energy request created:
+                                                    </Typography>
+                                                </Box>
                                                 <Card className="card"> {/*etichetta */}
                                                     <CardContent>
                                                         <Typography variant="h5" component="div" sx={{ textAlign: "center", color: "#000000", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
@@ -586,64 +627,90 @@ export default function CreateDsoDahsboard() {
                                                     </CardContent>
 
                                                 </Card>
-                                                <Box>
-                                                    <Typography variant="h5"
-                                                        sx={{ marginTop: "20px", marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-                                                        Viewing bids received for the energy created:
-                                                    </Typography>
-                                                    <TableContainer component={Paper} sx={{ width: "800px" }}> {/*qui definisco il componente table offers*/}
-                                                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                                            <TableHead sx={{ backgroundColor: "#38ACEC", fontWeight: 'bold' }}>
-                                                                <TableRow>
-                                                                    <TableCell>#</TableCell>
-                                                                    <TableCell align="right">Author</TableCell>
-                                                                    <TableCell align="right">Price</TableCell>
-                                                                </TableRow>
-                                                            </TableHead>
-                                                            <TableBody>
-                                                                {rowsOffer.map((rowOffer) => (
-                                                                    <TableRow
-                                                                        key={rowOffer.nameTab}
-                                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                                    >
-                                                                        <TableCell component="th" scope="row">
-                                                                            {rowOffer.nameTab}
-                                                                        </TableCell>
-                                                                        <TableCell align="right">{rowOffer.auhthorTab}</TableCell>
-                                                                        <TableCell align="right">{rowOffer.priceTab}</TableCell>
-                                                                    </TableRow>
-                                                                ))}
-                                                            </TableBody>
-                                                        </Table>
-                                                    </TableContainer>
-                                                </Box>
-                                                <Box>
-                                                    <Box sx={{ marginLeft: "20px" }}> {/* bottoni */}
-                                                        <Typography variant="h5"
-                                                            sx={{ marginTop: "20px", marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-                                                            Buttons to close the transaction and let the best bid win. Enter the ID of the Request of interest:
-                                                        </Typography>
-                                                        <TextField
-                                                            label="ID_Request:"
-                                                            id="outlined-start-adornment"
-                                                            sx={{ m: 1, width: '25ch' }}
-                                                            value={IDUser}
-                                                            onChange={handleInputChangeIDUser}
-                                                        />
-                                                        <Button onClick={() => { getWinningOffer() }} sx={{ marginTop: "20px" }} variant="contained">Get Winning Offer</Button>
-                                                        <Button sx={{ marginTop: "20px", marginLeft: "20px" }} variant="contained">Unlock payment</Button>
-
-                                                        <Box>
-                                                            <Typography variant="h5"
-                                                                sx={{ marginTop: "20px", marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-                                                                Displaying the progress of energy supply:
-                                                            </Typography>
-                                                            <ProgressBar /> {/* sesta figura, progressbar */}
-                                                        </Box>
-                                                    </Box>
-                                                </Box>
                                             </Box>
+                                            <Box>
+                                                <Typography variant="h5"
+                                                    sx={{ marginTop: "20px", marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                                                    Viewing bids received for the energy created:
+                                                </Typography>
+                                            </Box>
+                                            <TableContainer component={Paper} sx={{ width: "800px" }}> {/*qui definisco il componente table offers*/}
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                                    <TableHead sx={{ backgroundColor: "#38ACEC", fontWeight: 'bold' }}>
+                                                        <TableRow>
+                                                            <TableCell>#</TableCell>
+                                                            <TableCell align="right">Author</TableCell>
+                                                            <TableCell align="right">Price</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {rowsOffer.map((rowOffer) => (
+                                                            <TableRow
+                                                                key={rowOffer.nameTab}
+                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                            >
+                                                                <TableCell component="th" scope="row">
+                                                                    {rowOffer.nameTab}
+                                                                </TableCell>
+                                                                <TableCell align="right">{rowOffer.auhthorTab}</TableCell>
+                                                                <TableCell align="right">{rowOffer.priceTab}</TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
                                         </Box>
+                                        <Box>
+                                            <Box sx={{ marginLeft: "20px" }}> {/* bottoni */}
+                                                <Typography variant="h5"
+                                                    sx={{ marginTop: "20px", marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                                                    Buttons to close the transaction and let the best bid win. Enter the ID of the Request of interest:
+                                                </Typography>
+                                            </Box>
+                                            <TextField
+                                                label="ID_Request:"
+                                                id="outlined-start-adornment"
+                                                sx={{ m: 1, width: '25ch' }}
+                                                value={IDUser}
+                                                onChange={handleInputChangeIDUser}
+                                            />
+                                            <Button onClick={() => { getWinningOffer() }} sx={{ marginTop: "20px" }} variant="contained">Get Winning Offer</Button>
+                                            <Button sx={{ marginTop: "20px", marginLeft: "20px" }} variant="contained">Unlock payment</Button>
+                                        </Box>
+                                        <Box>
+                                            <Typography variant="h5"
+                                                sx={{ marginTop: "20px", marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                                                Displaying the progress of energy supply:
+                                            </Typography>
+                                        </Box>
+                                        <div className="progress-bar-container"> {/* sesta figura, progressbar */}
+                                            <div className="progress-bar" style={{ width: `${progressBar}%` }}>
+                                                <span className="progress-text">{progressBar}%</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <Dialog
+                                                open={open}
+                                                onClose={handleClose}
+                                                aria-labelledby="alert-dialog-title"
+                                                aria-describedby="alert-dialog-description"
+                                            >
+                                                
+                                                <DialogContent>
+                                                    <DialogContentText id="alert-dialog-description">
+                                                    Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}.    
+                                                    {"\n"}                    
+                                                    To see the list of offers related to the request ID, click OK`
+                                                    </DialogContentText>
+                                                </DialogContent>
+                                                <DialogActions>
+
+                                                    <Button onClick={handleClose} autoFocus>
+                                                        OK
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                        </div>
                                     </Box>
                                 </Box>
                             </Box>
@@ -652,5 +719,6 @@ export default function CreateDsoDahsboard() {
                 </Box>
             </Box>
         </Box>
+
     )
 }

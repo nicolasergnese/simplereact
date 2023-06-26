@@ -121,6 +121,7 @@ export default function BasicTabs() {
           <Tabs value={valuesub} onChange={handleChange1} aria-label="basic example">
             <Tab label="End user" {...a11yProps(0)} />
             <Tab label="ASM HQ" {...a11yProps(1)} />
+            <Tab label="Nuovo" {...a11yProps(2)} />
           </Tabs>
         </Box>
 
@@ -139,6 +140,9 @@ export default function BasicTabs() {
 
         <TabPanel value={valuesub} index={1}> {/* asm hq */}
           <ASMHQ /> {/*components*/ }
+          </TabPanel>
+          <TabPanel value={valuesub} index={2}> {/* asm hq */}
+          <ASMHQ/>
         </TabPanel>
       </TabPanel>
 
