@@ -6,9 +6,8 @@ const API_URL = config.host+"/auth/";
 class AuthService {
     async login(data) {
         const response = await axios.post(API_URL + "login", data).then(response => {
-            //console.log(response);
+            console.log(response);
             return response;
-
         }).catch(error => {
             //handle error
             console.log(error);

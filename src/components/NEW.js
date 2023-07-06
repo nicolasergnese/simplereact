@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 
 
 import InputLabel from '@mui/material/InputLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 import FormControl from '@mui/material/FormControl';
 
@@ -19,6 +20,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
+import { useTheme } from '@mui/material/styles';
+
+
+
 
 
 ChartJS.register( //caratteristiche chart
@@ -30,13 +35,68 @@ export default function CreateChart() {
 
   //inizia il codice per le select, menu a tendina
 
-  const [meter, setMeter] = useState(''); //attributo per le select, menu a tendina
+  const [sensor, setSensor] = useState([]); //attributo per le select, menu a tendina
   const [power, setPower] = useState('');//attributo per le select, menu a tendina
   const [labelCharter, setLabelCharter] = useState('')//per settare la legenda del charter
 
+
+  const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+  const sensorID = [ //nomi dei sensori
+    'BBB6150',
+    'BBB6152',
+    'BBB6154',
+    'BBB6155',
+    'BBB6156',
+    'BBB6157',
+    'BBB6158',
+    'BBB6159',
+    'BBB6160',
+    'BBB6161',
+    'BBB6162',
+    'BBB6163',
+    'BBB6164',
+    'BBB6166',
+    'BBB6167',
+    'BBB6168',
+    'BBB6169',
+    'BBB6170',
+    'BBB6171',
+    'BBB6173',
+    'BBB6174',
+  ];
+
+
+function getStyles(name, sensor, theme) {
+  return {
+    fontWeight:
+      sensor.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
+const theme = useTheme();
+const handleChange = (event) => {
+  const {
+    target: { value },
+  } = event;
+  setSensor(value);
+};
+
+
   const handleSelect1Change = (event) => { //funzione per settare lo stato iniziale
     const value = event.target.value;
-    setMeter(value);
+    setSensor(value);
     // Effettua le modifiche ai valori della seconda select in base alla selezione nella prima select
     if (value === 'opzione1') {
       setPower('Power_P_1_7_0_W2.CV');
@@ -48,11 +108,6 @@ export default function CreateChart() {
       setPower('Power_P_1_7_0_W6.CV'); // Modifica qui per assegnare un valore corretto
     }
   };
-
- /*  useEffect(() => { //Per evitare la duplicazione della stampa, utilizzo useEffect che si attiva solo quando power cambia. 
-    //console.log(power);
-    newChart()
-  }, [power]); */
 
   
 
@@ -266,18 +321,30 @@ export default function CreateChart() {
     newChart();
   }, [numbers, dateTime, power, newChart]);
 
-
   
 
   return (
     <Box sx={{ minWidth: 60 }}> {/*box per la prima select, menu a tendina, meter */}
       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-        <InputLabel id="demo-simple-select-label">Meter</InputLabel>
-        <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={meter} onChange={handleSelect1Change}>
-          <MenuItem value="opzione1">aggregated PV and EV charging station</MenuItem>{/*definisco i sensori */}
-          <MenuItem value="opzione2">ASM headquarters</MenuItem>
-          <MenuItem value="opzione3">EV charging station Fast</MenuItem>
-          <MenuItem value="opzione4">PV plant 185 KW</MenuItem>
+      <InputLabel id="demo-multiple-name-label">Sensor</InputLabel>
+        <Select
+          labelId="demo-multiple-name-label"
+          id="demo-multiple-name"
+          multiple
+          value={sensor}
+          onChange={handleChange}
+          input={<OutlinedInput label="Sensor" />}
+          MenuProps={MenuProps}
+        >
+          {sensorID.map((name) => (
+            <MenuItem
+              key={name}
+              value={name}
+              style={getStyles(name, sensor, theme)}
+            >
+              {name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
       <Box> {/*box per la seconda select, menu a tendina, power */}
@@ -285,22 +352,22 @@ export default function CreateChart() {
           <InputLabel id="demo-simple-select-label">Power</InputLabel>
           <Select labelId="demo-simple-select-label" id="demo-simple-select-power" value={power} onChange={(event) => setPower(event.target.value)}>
             <MenuItem value="">Select meter</MenuItem> {/*questa è logica per associare ad ogni sensore il proprio tagname */}
-            {meter === 'opzione1' && [ 
+            {sensor === 'opzione1' && [ 
               <MenuItem key="valore1" value="Power_P_1_7_0_W2.CV">Active power [kW]</MenuItem>,
               <MenuItem key="valore2" value="Power_Q_3_7_0_W2.CV">Reactive power [kVAR]</MenuItem>,
               <MenuItem key="valore3" value="Power_S_9_7_0_W2.CV">Apparent power [kVA]</MenuItem>
             ]}
-            {meter === 'opzione2' && [
+            {sensor === 'opzione2' && [
               <MenuItem key="valore4" value="Power_P_1_7_0_W4.CV">Active power [kW]</MenuItem>,
               <MenuItem key="valore5" value="Power_Q_3_7_0_W4.CV">Reactive power [kVAR]</MenuItem>,
               <MenuItem key="valore6" value="Power_S_9_7_0_W4.CV">Apparent power [kVA]</MenuItem>
             ]}
-            {meter === 'opzione3' && [
+            {sensor === 'opzione3' && [
               <MenuItem key="valore7" value="Power_P_1_7_0_W5.CV">Active power [kW]</MenuItem>,
               <MenuItem key="valore8" value="Power_Q_3_7_0_W5.CV">Reactive power [kVAR]</MenuItem>,
               <MenuItem key="valore9" value="Power_S_9_7_0_W5.CV">Apparent power [kVA]</MenuItem>
             ]}
-            {meter === 'opzione4' && [
+            {sensor === 'opzione4' && [
               <MenuItem key="valore10" value="Power_P_1_7_0_W6.CV">Active power [kW]</MenuItem>,
               <MenuItem key="valore11" value="Power_Q_3_7_0_W6.CV">Reactive power [kVAR]</MenuItem>,
               <MenuItem key="valore12" value="Power_S_9_7_0_W6.CV">Apparent power [kVA]</MenuItem>
@@ -332,7 +399,7 @@ export default function CreateChart() {
           </LocalizationProvider>
         </Box>
         <Box textAlign={"center"} sx={{ marginTop: 5 }}>
-          <Button variant="contained" onClick={() => { sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend(); handleSubmitClick(); setMeter(''); setPower('') }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
+          <Button variant="contained" onClick={() => { sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend(); handleSubmitClick(); }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
           <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}> 
             <Line data={chart}></Line> {/*qui definisco il componente chart*/}
           </Box>

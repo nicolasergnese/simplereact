@@ -536,7 +536,7 @@ export default function CreateDsoDahsboard() {
                                     </FormControl>
                                     <Box sx={{ marginLeft: "10px" }}>
                                         <Box>
-                                            <Button onClick={() => { sendDataEnergyValueToBackend(); handleSubmitClick(); }} sx={{ marginTop: "10px", marginLeft: "100px" }} variant="contained">Submit</Button>
+                                            <Button onClick={() => { sendDataEnergyValueToBackend(); handleSubmitClick(); setEnergyValue(''); setMaxPriceValue(''); setChargingStationId('') }} sx={{ marginTop: "10px", marginLeft: "100px" }} variant="contained">Submit</Button>
                                             <Box sx={{ marginTop: "20px" }}>
                                             </Box>
                                             <Box></Box>

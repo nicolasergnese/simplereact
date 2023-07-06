@@ -22,6 +22,7 @@ import DateAndTime from './dateAndTime' //importo data e orario per gli chart
 
 import ASMHQ from './ASMHQ'
 import DSO  from './DSO'
+import NEW from './NEW'
 
 
 import './Components.css';
@@ -142,7 +143,7 @@ export default function BasicTabs() {
           <ASMHQ /> {/*components*/ }
           </TabPanel>
           <TabPanel value={valuesub} index={2}> {/* asm hq */}
-          <ASMHQ/>
+          <NEW/>
         </TabPanel>
       </TabPanel>
 

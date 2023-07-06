@@ -110,21 +110,27 @@ const Login = () => {
 
 			AuthService.login(payload)
 				.then((response) => {
-					console.log(response)
-					if (response.status !== 200 || response.status !== 201)
+					//console.log(response)
+					if (response.status === 200 || response.status === 201) {
 						setValues({
 							...values,
 							successMessage: response.data.message,
 						})
-					sessionStorage.setItem("ACCESS_TOKEN_NAME", response.data.token);
 					redirectToHome();
-
+					}
+					else {
+						setValues({
+						  ...values,
+						  successMessage: "email or password error",
+						});
+					  }
+					sessionStorage.setItem("ACCESS_TOKEN_NAME", response.data.token);
 				})
 				.catch(function (error) {
 					console.log(error);
 					setValues({
 						...values,
-						successMessage: "errors",
+						successMessage: "email or password error",
 					})
 					//props.showError("Username does not exists");
 				});
