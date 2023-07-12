@@ -44,6 +44,10 @@ export default function CreateDsoDahsboard() {
 
     //inizio codice per Energy
     const [energyValue, setEnergyValue] = useState("");
+    const [maxPriceValue, setMaxPriceValue] = useState("");
+    const [chargingStationId, setChargingStationId] = useState(''); //attributo per le select, menu a tendina
+    const [failMessageSubmit, setFailMessageSubmit] = useState(false)
+    const [failMessageWinning, setFailMessageWinning] = useState(false)
 
     const handleInputChangeEnergy = (event) => { //serve per modificare il valore e salvarlo
         setEnergyValue(event.target.value);
@@ -92,40 +96,8 @@ export default function CreateDsoDahsboard() {
             });
     };
 
-    //import axios from 'axios';
-
-    /* const sendDataEndAndRequestIdExtraToBackend = () => { //stessa cosa di fetch, ma con axios
-      const epochDateEnd = valueEnd.unix();
-    
-      axios.post("https://emotion-projects.eu/marketplace/request", { dateend: epochDateEnd })
-        .then((response) => {
-          console.log("Risposta prima chiamata dal backend:", response.data);
-          // Effettua un'altra chiamata API qui
-          const secondApiPayload = {
-            extra: energyValue,
-            request_id: requestID,
-          };
-          
-          axios.post("https://emotion-projects.eu/marketplace/request/register", secondApiPayload)
-            .then((response) => {
-              console.log("Risposta dalla seconda chiamata API:", response.data);
-              // Gestisci la risposta della seconda chiamata API qui
-            })
-            .catch((error) => {
-              console.error("Errore durante la seconda chiamata API:", error);
-              // Gestisci l'errore della seconda chiamata API qui
-            });
-        })
-        .catch((error) => {
-          console.error("Errore durante la richiesta al backend:", error);
-        });
-    }; */
-
-
-    //codice finito per il Datetime
-
     //inizio codice per maxPrice
-    const [maxPriceValue, setMaxPriceValue] = useState("");
+
 
     const handleInputChangeMaxPrice = (event) => { //serve per modificare il valore e salvarlo
         setMaxPriceValue(event.target.value);
@@ -134,7 +106,6 @@ export default function CreateDsoDahsboard() {
 
 
     //codice per select charging station id
-    const [chargingStationId, setChargingStationId] = useState(''); //attributo per le select, menu a tendina
 
     const handleSelect1Change = (event) => { //funzione per settare lo stato iniziale
         const value = event.target.value;
@@ -192,8 +163,6 @@ export default function CreateDsoDahsboard() {
     };
 
 
-    const [setStartDateRequest] = useState('');
-
     const [rowsRequest, setRowsRequest] = useState([]);
     const tablerequest = async () => {
         try {
@@ -246,39 +215,44 @@ export default function CreateDsoDahsboard() {
 
     const handleSubmitClick = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/tablerequest", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            if (response.ok) {
-                setRows([])
-                const responseData = await response.json(); //prendo lista offers
-                //console.log(responseData);
-                const requests = responseData.requests;//prendo le request 
-                //console.log('request', requests)
-                requests.forEach((request) => { //prendo i dati da ciascuna request e setto attributi taballe
-                    const tempRequestID = request.id;
-                    const tempDateEnd = request.deadline;
-                    const extraValues = request.extra;
-                    const endRequest = tempDateEnd;
-                    const energyRequest = extraValues[0];
-                    const startDate = new Date(extraValues[1] * 1000);
-                    const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
-                    //console.log(request.id);
-                    //console.log(startRequest);
-                    addRowRequestNew(tempRequestID, formattedStartDate, endRequest, energyRequest);
-                });
-                return responseData;
+            if (energyValue === '' || chargingStationId === '' || maxPriceValue === '' || valueStart === '' || valueEnd === '') {
+                setFailMessageSubmit(true);
             } else {
-                // handle error
-                console.log(response);
-                const errorResponse = {
-                    status: response.status,
-                    message: response.statusText,
-                };
-                return errorResponse;
+                setFailMessageSubmit(false);
+                const response = await fetch("http://localhost:8080/api/tablerequest", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (response.ok) {
+                    setRows([])
+                    const responseData = await response.json(); //prendo lista offers
+                    //console.log(responseData);
+                    const requests = responseData.requests;//prendo le request 
+                    //console.log('request', requests)
+                    requests.forEach((request) => { //prendo i dati da ciascuna request e setto attributi taballe
+                        const tempRequestID = request.id;
+                        const tempDateEnd = request.deadline;
+                        const extraValues = request.extra;
+                        const endRequest = tempDateEnd;
+                        const energyRequest = extraValues[0];
+                        const startDate = new Date(extraValues[1] * 1000);
+                        const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
+                        //console.log(request.id);
+                        //console.log(startRequest);
+                        addRowRequestNew(tempRequestID, formattedStartDate, endRequest, energyRequest);
+                    });
+                    return responseData;
+                } else {
+                    // handle error
+                    console.log(response);
+                    const errorResponse = {
+                        status: response.status,
+                        message: response.statusText,
+                    };
+                    return errorResponse;
+                }
             }
         } catch (error) {
             // handle network error
@@ -310,40 +284,45 @@ export default function CreateDsoDahsboard() {
 
     const getWinningOffer = async () => {
         try {
-            setRowsOffer([]);
-            startTimer();
-            sendDataIDUserToBackend();
-            getRequestToBackend();
-            fetch('http://localhost:8080/api/offers')
-                .then(response => response.json())
-                .then(data => {
-                    winnerID = data.winnerID;
-                    minExtraValue = data.minExtraValue;
-                    const dataOffer = data.dataOffer;
-                    dataOffer.forEach(offer => {
-                        // Accesso ai dati dell'offerta singolarmente
-                        const author = offer.author;
-                        const idValue = offer.idValue;
-                        const extraValue = offer.extraValue;
-                        // Fai qualcosa con winnerID e minExtraValue
-                        // Esempio di output nel console.log per ciascun oggetto
-                        console.log('Author:', author);
-                        console.log('ID Value:', idValue);
-                        console.log('Extra Value:', extraValue);
+            if (IDUser === '') {
+                setFailMessageWinning(true);
+            } else {
+                setFailMessageWinning(false);
+                setRowsOffer([]);
+                startTimer();
+                sendDataIDUserToBackend();
+                getRequestToBackend();
+                fetch('http://localhost:8080/api/offers')
+                    .then(response => response.json())
+                    .then(data => {
+                        winnerID = data.winnerID;
+                        minExtraValue = data.minExtraValue;
+                        const dataOffer = data.dataOffer;
+                        dataOffer.forEach(offer => {
+                            // Accesso ai dati dell'offerta singolarmente
+                            const author = offer.author;
+                            const idValue = offer.idValue;
+                            const extraValue = offer.extraValue;
+                            // Fai qualcosa con winnerID e minExtraValue
+                            // Esempio di output nel console.log per ciascun oggetto
+                            console.log('Author:', author);
+                            console.log('ID Value:', idValue);
+                            console.log('Extra Value:', extraValue);
 
-                        // Puoi fare qualsiasi altra elaborazione necessaria con i dati qui
+                            // Puoi fare qualsiasi altra elaborazione necessaria con i dati qui
 
-                        // Esempio di chiamata a una funzione per aggiungere una riga per ogni offerta
-                        addRowOffer(author, idValue, extraValue);
+                            // Esempio di chiamata a una funzione per aggiungere una riga per ogni offerta
+                            addRowOffer(author, idValue, extraValue);
+                        });
+                        console.log('winnerID:', winnerID);
+                        console.log('minExtraValue:', minExtraValue);
+                        setOpen(true)
+                        //alert(`Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}. \n\nTo see the list of offers related to the request ID, click OK`);
+                    })
+                    .finally(() => {
+                        setProgressBar(100);
                     });
-                    console.log('winnerID:', winnerID);
-                    console.log('minExtraValue:', minExtraValue);
-                    setOpen(true)
-                    //alert(`Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}. \n\nTo see the list of offers related to the request ID, click OK`);
-                })
-                .finally(() => {
-                    setProgressBar(100);
-                });
+            }
         } catch (error) {
             // handle network error
             console.log(error);
@@ -537,6 +516,7 @@ export default function CreateDsoDahsboard() {
                                     <Box sx={{ marginLeft: "10px" }}>
                                         <Box>
                                             <Button onClick={() => { sendDataEnergyValueToBackend(); handleSubmitClick(); setEnergyValue(''); setMaxPriceValue(''); setChargingStationId('') }} sx={{ marginTop: "10px", marginLeft: "100px" }} variant="contained">Submit</Button>
+                                            {failMessageSubmit && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
                                             <Box sx={{ marginTop: "20px" }}>
                                             </Box>
                                             <Box></Box>
@@ -676,6 +656,7 @@ export default function CreateDsoDahsboard() {
                                             />
                                             <Button onClick={() => { getWinningOffer() }} sx={{ marginTop: "20px" }} variant="contained">Get Winning Offer</Button>
                                             <Button sx={{ marginTop: "20px", marginLeft: "20px" }} variant="contained">Unlock payment</Button>
+                                            {failMessageWinning && <p style={{ color: 'red' }}>Please, fill in the ID_Request field.</p>}
                                         </Box>
                                         <Box>
                                             <Typography variant="h5"
@@ -695,12 +676,12 @@ export default function CreateDsoDahsboard() {
                                                 aria-labelledby="alert-dialog-title"
                                                 aria-describedby="alert-dialog-description"
                                             >
-                                                
+
                                                 <DialogContent>
                                                     <DialogContentText id="alert-dialog-description">
-                                                    Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}.    
-                                                    {"\n"}                    
-                                                    To see the list of offers related to the request ID, click OK`
+                                                        Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}.
+                                                        {"\n"}
+                                                        To see the list of offers related to the request ID, click OK`
                                                     </DialogContentText>
                                                 </DialogContent>
                                                 <DialogActions>

@@ -33,6 +33,9 @@ export default function CreateChart() {
   const [meter, setMeter] = useState(''); //attributo per le select, menu a tendina
   const [power, setPower] = useState('');//attributo per le select, menu a tendina
   const [labelCharter, setLabelCharter] = useState('')//per settare la legenda del charter
+  const [valueStart, setValueStart] = useState(dayjs(new Date())); //setto valore iniziale
+  const [valueEnd, setValueEnd] = useState(dayjs(new Date())); //setto valore iniziale
+  const [failMessage, setFailMessage] = useState(false)
 
   const handleSelect1Change = (event) => { //funzione per settare lo stato iniziale
     const value = event.target.value;
@@ -49,18 +52,13 @@ export default function CreateChart() {
     }
   };
 
- /*  useEffect(() => { //Per evitare la duplicazione della stampa, utilizzo useEffect che si attiva solo quando power cambia. 
-    //console.log(power);
-    newChart()
-  }, [power]); */
-
-  
-
-  const sendSelectBackend = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
+  const sendPoweDateStartAndDateEndBackend = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
     //console.log("send data")
-    fetch('http://localhost:8080/api/power', { //collegamento back-end
+    const formattedDateStart = valueStart.toDate()
+    const formattedDateEnd = valueEnd.toDate()
+    fetch('http://localhost:8080/api/powerDateStartAndDateEnd', { //collegamento back-end
       method: 'POST',
-      body: JSON.stringify({ power }),
+      body: JSON.stringify({ power, formattedDateStart, formattedDateEnd }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -76,63 +74,12 @@ export default function CreateChart() {
       });
   }
   //codice finito per select, menu a tendina
-
-  //inizio codice per il DateAndTime
-  const [valueStart, setValueStart] = useState(dayjs(new Date())); //setto valore iniziale
-  const [valueEnd, setValueEnd] = useState(dayjs(new Date())); //setto valore iniziale
-
   const handleChangeDateAndTimeStart = (newValue) => { //funzione per settare un nuovo stato;
     setValueStart(newValue);
   };
   const handleChangeDateAndTimeEnd = (newValue) => { //funzione per settare un nuovo stato
     setValueEnd(newValue);
   };
-
-  const sendDataStartToBackend = () => { //funzione per mandara la data al back-end
-    //const formattedDate = valueStart.format("YYYY-MM-DD HH:mm:00"); // Formatta la data come necessario
-    const formattedDate = valueStart.toDate()
-
-    fetch("http://localhost:8080/api/datetimestart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ datestart: formattedDate }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Gestisci la risposta dal backend
-        //console.log("Risposta dal backend:", data);
-      })
-      .catch((error) => {
-        // Gestisci l'errore
-        console.error("Errore durante la richiesta al backend:", error);
-      });
-    //console.log(formattedDate)
-  };
-
-  const sendDataEndToBackend = () => { //funzione per mandara la data al back-end
-    //const formattedDate = valueEnd.format("YYYY-MM-DD HH:mm:00"); // Formatta la data come necessario
-    const formattedDate = valueEnd.toDate()
-
-    fetch("http://localhost:8080/api/datetimeend", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ dateend: formattedDate }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Gestisci la risposta dal backend
-        //console.log("Risposta dal backend:", data);
-      })
-      .catch((error) => {
-        // Gestisci l'errore
-        console.error("Errore durante la richiesta al backend:", error);
-      });
-  };
-  //codice finito per il Datetime
 
   //inizio codice per lo chart
   const [chart, setChart] = useState({//setto stto iniziale dello chart, attributi
@@ -157,44 +104,44 @@ export default function CreateChart() {
 
 
   const changeLabels = () => {
-    if(power==='Power_P_1_7_0_W2.CV') {
+    if (power === 'Power_P_1_7_0_W2.CV') {
       setLabelCharter('Active power [kW]')
     }
-    else if(power==='Power_Q_3_7_0_W2.CV') {
+    else if (power === 'Power_Q_3_7_0_W2.CV') {
       setLabelCharter('Reactive power [kVAR]')
     }
-    else if(power==='Power_S_9_7_0_W2.CV') {
+    else if (power === 'Power_S_9_7_0_W2.CV') {
       setLabelCharter('Apparent power [kVA]')
     }
-    else if(power==='Power_P_1_7_0_W4.CV') {
+    else if (power === 'Power_P_1_7_0_W4.CV') {
       setLabelCharter('Active power [kW]')
     }
-    else if(power==='Power_Q_3_7_0_W4.CV') {
+    else if (power === 'Power_Q_3_7_0_W4.CV') {
       setLabelCharter('Reactive power [kVAR]')
     }
-    else if(power==='Power_S_9_7_0_W4.CV') {
+    else if (power === 'Power_S_9_7_0_W4.CV') {
       setLabelCharter('Apparent power [kVA]')
     }
-    else if(power==='Power_P_1_7_0_W5.CV') {
+    else if (power === 'Power_P_1_7_0_W5.CV') {
       setLabelCharter('Active power [kW]')
     }
-    else if(power==='Power_Q_3_7_0_W5.CV') {
+    else if (power === 'Power_Q_3_7_0_W5.CV') {
       setLabelCharter('Reactive power [kVAR]')
     }
-    else if(power==='Power_S_9_7_0_W5.CV') {
+    else if (power === 'Power_S_9_7_0_W5.CV') {
       setLabelCharter('Apparent power [kVA]')
     }
-    else if(power==='Power_P_1_7_0_W6.CV') {
+    else if (power === 'Power_P_1_7_0_W6.CV') {
       setLabelCharter('Active power [kW]')
     }
-    else if(power==='Power_Q_3_7_0_W6.CV') {
+    else if (power === 'Power_Q_3_7_0_W6.CV') {
       setLabelCharter('Reactive power [kVAR]')
     }
-    else if(power==='Power_S_9_7_0_W6.CV') {
+    else if (power === 'Power_S_9_7_0_W6.CV') {
       setLabelCharter('Apparent power [kVA]')
     }
   }
-  
+
 
   function newChart() {
     changeLabels();
@@ -214,41 +161,46 @@ export default function CreateChart() {
         },
       ],
     })
-  } 
+  }
 
 
   const handleSubmitClick = async () => { //funzione per riempire il charter con il bottone search
     try {
-      const response = await fetch("http://localhost:8080/api/chartDateTime", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const responseData = await response.json();
-        //console.log(responseData)
-        let tempDateTime = [];
-        let tempValue = [];
-        responseData.forEach((element) => {
-          tempDateTime.push(element.DATETIME); // Accesso al valore DateTime per ogni elemento
-          tempValue.push(element.VALUE);
-          //console.log(responseData);
-        });
-        //console.log(tempValue)
-        //console.log(tempDateTime)
-        setNumbers(tempValue); //setto valori per il grafico nuovo
-        setDateTime(tempDateTime)
-        newChart(); //avvio funzione per cambiare stato allo chart
-        return responseData;
+      if (meter === '' || power === '' || valueStart === '' || valueEnd === '') {
+        setFailMessage(true);
       } else {
-        // handle error
-        console.log(response);
-        const errorResponse = {
-          status: response.status,
-          message: response.statusText,
-        };
-        return errorResponse;
+        setFailMessage(false);
+        const response = await fetch("http://localhost:8080/api/chartDateTime", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          //console.log(responseData)
+          let tempDateTime = [];
+          let tempValue = [];
+          responseData.forEach((element) => {
+            tempDateTime.push(element.DATETIME); // Accesso al valore DateTime per ogni elemento
+            tempValue.push(element.VALUE);
+            //console.log(responseData);
+          });
+          //console.log(tempValue)
+          //console.log(tempDateTime)
+          setNumbers(tempValue); //setto valori per il grafico nuovo
+          setDateTime(tempDateTime)
+          newChart(); //avvio funzione per cambiare stato allo chart
+          return responseData;
+        } else {
+          // handle error
+          console.log(response);
+          const errorResponse = {
+            status: response.status,
+            message: response.statusText,
+          };
+          return errorResponse;
+        }
       }
     } catch (error) {
       // handle network error
@@ -260,14 +212,13 @@ export default function CreateChart() {
       return errorResponse;
     }
   }
-  
+
 
   useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
     newChart();
   }, [numbers, dateTime, power, newChart]);
 
 
-  
 
   return (
     <Box sx={{ minWidth: 60 }}> {/*box per la prima select, menu a tendina, meter */}
@@ -282,10 +233,9 @@ export default function CreateChart() {
       </FormControl>
       <Box> {/*box per la seconda select, menu a tendina, power */}
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-          <InputLabel id="demo-simple-select-label">Power</InputLabel>
-          <Select labelId="demo-simple-select-label" id="demo-simple-select-power" value={power} onChange={(event) => setPower(event.target.value)}>
-            <MenuItem value="">Select meter</MenuItem> {/*questa è logica per associare ad ogni sensore il proprio tagname */}
-            {meter === 'opzione1' && [ 
+          <InputLabel id="demo-simple-select-label" disabled={!meter}>Power</InputLabel>
+          <Select labelId="demo-simple-select-label" id="demo-simple-select-power" value={power} disabled={!meter} onChange={(event) => setPower(event.target.value)}>
+            {meter === 'opzione1' && [
               <MenuItem key="valore1" value="Power_P_1_7_0_W2.CV">Active power [kW]</MenuItem>,
               <MenuItem key="valore2" value="Power_Q_3_7_0_W2.CV">Reactive power [kVAR]</MenuItem>,
               <MenuItem key="valore3" value="Power_S_9_7_0_W2.CV">Apparent power [kVA]</MenuItem>
@@ -307,7 +257,7 @@ export default function CreateChart() {
             ]}
           </Select>
         </FormControl>
-        <Typography variant="h5" 
+        <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Historical data
         </Typography> {/*serve per il testo visualizzato in pagina*/}
@@ -332,8 +282,9 @@ export default function CreateChart() {
           </LocalizationProvider>
         </Box>
         <Box textAlign={"center"} sx={{ marginTop: 5 }}>
-          <Button variant="contained" onClick={() => { sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend(); handleSubmitClick(); setMeter(''); setPower('') }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
-          <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}> 
+          <Button variant="contained" onClick={() => { sendPoweDateStartAndDateEndBackend(); handleSubmitClick(); setMeter(''); setPower('') }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
+          {failMessage && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
+          <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
             <Line data={chart}></Line> {/*qui definisco il componente chart*/}
           </Box>
         </Box>

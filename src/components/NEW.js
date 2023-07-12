@@ -35,21 +35,26 @@ export default function CreateChart() {
 
   //inizia il codice per le select, menu a tendina
 
-  const [sensor, setSensor] = useState([]); //attributo per le select, menu a tendina
-  const [power, setPower] = useState('');//attributo per le select, menu a tendina
+  const [sensor, setSensor] = useState(''); //attributo per le select, menu a tendina
+  const [serviceId, setServiceId] = useState('');//attributo per le select, menu a tendina 
   const [labelCharter, setLabelCharter] = useState('')//per settare la legenda del charter
+  const [valueStart, setValueStart] = useState(dayjs(new Date())); //setto valore start date
+  const [valueEnd, setValueEnd] = useState(dayjs(new Date())); //setto valore end date
+  const [numbers, setNumbers] = useState([]) //stato per modificare le y, ossia il value
+  const [dateTime, setDateTime] = useState([]) //stato per modificare le x, ossia il dateTime
+  const [failMessage, setFailMessage] = useState(false)
 
 
   const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
     },
-  },
-};
+  };
 
   const sensorID = [ //nomi dei sensori
     'BBB6150',
@@ -76,55 +81,41 @@ const MenuProps = {
   ];
 
 
-function getStyles(name, sensor, theme) {
-  return {
-    fontWeight:
-      sensor.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+  function getStyles(name, sensor, theme) {
+    return {
+      fontWeight:
+        sensor === sensorID
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
 
-const theme = useTheme();
-const handleChange = (event) => {
-  const {
-    target: { value },
-  } = event;
-  setSensor(value);
-};
-
-
-  const handleSelect1Change = (event) => { //funzione per settare lo stato iniziale
-    const value = event.target.value;
+  const theme = useTheme();
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
     setSensor(value);
-    // Effettua le modifiche ai valori della seconda select in base alla selezione nella prima select
-    if (value === 'opzione1') {
-      setPower('Power_P_1_7_0_W2.CV');
-    } else if (value === 'opzione2') {
-      setPower('Power_P_1_7_0_W4.CV'); // Modifica qui per assegnare un valore corretto
-    } else if (value === 'opzione3') {
-      setPower('Power_P_1_7_0_W5.CV'); // Modifica qui per assegnare un valore corretto
-    } else if (value === 'opzione4') {
-      setPower('Power_P_1_7_0_W6.CV'); // Modifica qui per assegnare un valore corretto
-    }
   };
 
-  
+  const handleSelectServiceIdChange = (event) => { //funzione per settare lo stato iniziale
+    const value = event.target.value;
+    setServiceId(value);
+    // Effettua le modifiche ai valori della seconda select in base alla selezione nella prima select
+  };
 
-  const sendSelectBackend = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
+  const sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
     //console.log("send data")
-    fetch('http://localhost:8080/api/power', { //collegamento back-end
+    const formattedDateStart = valueStart.toDate()
+    const formattedDateEnd = valueEnd.toDate()
+    fetch('http://localhost:8080/api/sensorIdServiceIdDateStartAndDateend', { //collegamento back-end
       method: 'POST',
-      body: JSON.stringify({ power }),
+      body: JSON.stringify({ sensor, serviceId, formattedDateStart, formattedDateEnd }),
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then((response) => response.json())
-      .then((data) => {
-        // Gestisci la risposta del backend se necessario
-        //console.log(data);
-      })
       .catch((error) => {
         // Gestisci gli errori se necessario
         console.error(error);
@@ -133,59 +124,11 @@ const handleChange = (event) => {
   //codice finito per select, menu a tendina
 
   //inizio codice per il DateAndTime
-  const [valueStart, setValueStart] = useState(dayjs(new Date())); //setto valore iniziale
-  const [valueEnd, setValueEnd] = useState(dayjs(new Date())); //setto valore iniziale
-
   const handleChangeDateAndTimeStart = (newValue) => { //funzione per settare un nuovo stato;
     setValueStart(newValue);
   };
   const handleChangeDateAndTimeEnd = (newValue) => { //funzione per settare un nuovo stato
     setValueEnd(newValue);
-  };
-
-  const sendDataStartToBackend = () => { //funzione per mandara la data al back-end
-    //const formattedDate = valueStart.format("YYYY-MM-DD HH:mm:00"); // Formatta la data come necessario
-    const formattedDate = valueStart.toDate()
-
-    fetch("http://localhost:8080/api/datetimestart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ datestart: formattedDate }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Gestisci la risposta dal backend
-        //console.log("Risposta dal backend:", data);
-      })
-      .catch((error) => {
-        // Gestisci l'errore
-        console.error("Errore durante la richiesta al backend:", error);
-      });
-    //console.log(formattedDate)
-  };
-
-  const sendDataEndToBackend = () => { //funzione per mandara la data al back-end
-    //const formattedDate = valueEnd.format("YYYY-MM-DD HH:mm:00"); // Formatta la data come necessario
-    const formattedDate = valueEnd.toDate()
-
-    fetch("http://localhost:8080/api/datetimeend", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ dateend: formattedDate }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Gestisci la risposta dal backend
-        //console.log("Risposta dal backend:", data);
-      })
-      .catch((error) => {
-        // Gestisci l'errore
-        console.error("Errore durante la richiesta al backend:", error);
-      });
   };
   //codice finito per il Datetime
 
@@ -206,48 +149,14 @@ const handleChange = (event) => {
       },
     ],
   });
-  //console.log(values.datasets[0].data) //stampo valore data
-  const [numbers, setNumbers] = useState([]) //stato per modificare le y, ossia il value
-  const [dateTime, setDateTime] = useState([]) //stato per modificare le x, ossia il dateTime
-
 
   const changeLabels = () => {
-    if(power==='Power_P_1_7_0_W2.CV') {
-      setLabelCharter('Active power [kW]')
-    }
-    else if(power==='Power_Q_3_7_0_W2.CV') {
-      setLabelCharter('Reactive power [kVAR]')
-    }
-    else if(power==='Power_S_9_7_0_W2.CV') {
-      setLabelCharter('Apparent power [kVA]')
-    }
-    else if(power==='Power_P_1_7_0_W4.CV') {
-      setLabelCharter('Active power [kW]')
-    }
-    else if(power==='Power_Q_3_7_0_W4.CV') {
-      setLabelCharter('Reactive power [kVAR]')
-    }
-    else if(power==='Power_S_9_7_0_W4.CV') {
-      setLabelCharter('Apparent power [kVA]')
-    }
-    else if(power==='Power_P_1_7_0_W5.CV') {
-      setLabelCharter('Active power [kW]')
-    }
-    else if(power==='Power_Q_3_7_0_W5.CV') {
-      setLabelCharter('Reactive power [kVAR]')
-    }
-    else if(power==='Power_S_9_7_0_W5.CV') {
-      setLabelCharter('Apparent power [kVA]')
-    }
-    else if(power==='Power_P_1_7_0_W6.CV') {
-      setLabelCharter('Active power [kW]')
-    }
-    else if(power==='Power_Q_3_7_0_W6.CV') {
-      setLabelCharter('Reactive power [kVAR]')
-    }
-    else if(power==='Power_S_9_7_0_W6.CV') {
-      setLabelCharter('Apparent power [kVA]')
-    }
+        if (serviceId === '1') {
+          setLabelCharter('Active power [kW]')
+        }
+        else if (serviceId === '2') {
+          setLabelCharter('Apparent power [kVA]')
+        }
   }
   
 
@@ -269,41 +178,45 @@ const handleChange = (event) => {
         },
       ],
     })
-  } 
-
+  }
 
   const handleSubmitClick = async () => { //funzione per riempire il charter con il bottone search
     try {
-      const response = await fetch("http://localhost:8080/api/chartDateTime", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.ok) {
-        const responseData = await response.json();
-        //console.log(responseData)
-        let tempDateTime = [];
-        let tempValue = [];
-        responseData.forEach((element) => {
-          tempDateTime.push(element.DATETIME); // Accesso al valore DateTime per ogni elemento
-          tempValue.push(element.VALUE);
-          //console.log(responseData);
-        });
-        //console.log(tempValue)
-        //console.log(tempDateTime)
-        setNumbers(tempValue); //setto valori per il grafico nuovo
-        setDateTime(tempDateTime)
-        newChart(); //avvio funzione per cambiare stato allo chart
-        return responseData;
+      if (sensorID === '' || serviceId === '' || valueStart === '' || valueEnd === '') {
+        setFailMessage(true);
       } else {
-        // handle error
-        console.log(response);
-        const errorResponse = {
-          status: response.status,
-          message: response.statusText,
-        };
-        return errorResponse;
+        setFailMessage(false);
+        const response = await fetch("http://localhost:8080/api/chartDateTimeNew", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          //console.log(responseData)
+          let tempDateTime = [];
+          let tempValue = [];
+          responseData.forEach((element) => {
+            tempDateTime.push(element.DATETIME); // Accesso al valore DateTime per ogni elemento
+            tempValue.push(element.VALUE);
+            //console.log(responseData);
+          });
+          //console.log(tempValue)
+          //console.log(tempDateTime)
+          setNumbers(tempValue); //setto valori per il grafico nuovo
+          setDateTime(tempDateTime)
+          newChart(); //avvio funzione per cambiare stato allo chart
+          return responseData;
+        } else {
+          // handle error
+          console.log(response);
+          const errorResponse = {
+            status: response.status,
+            message: response.statusText,
+          };
+          return errorResponse;
+        }
       }
     } catch (error) {
       // handle network error
@@ -315,22 +228,21 @@ const handleChange = (event) => {
       return errorResponse;
     }
   }
-  
+
 
   useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
     newChart();
-  }, [numbers, dateTime, power, newChart]);
+  }, [numbers, dateTime, serviceId, newChart]);
 
-  
+
 
   return (
     <Box sx={{ minWidth: 60 }}> {/*box per la prima select, menu a tendina, meter */}
       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="demo-multiple-name-label">Sensor</InputLabel>
+        <InputLabel id="demo-multiple-name-label">Sensor</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"
-          multiple
           value={sensor}
           onChange={handleChange}
           input={<OutlinedInput label="Sensor" />}
@@ -349,32 +261,13 @@ const handleChange = (event) => {
       </FormControl>
       <Box> {/*box per la seconda select, menu a tendina, power */}
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-          <InputLabel id="demo-simple-select-label">Power</InputLabel>
-          <Select labelId="demo-simple-select-label" id="demo-simple-select-power" value={power} onChange={(event) => setPower(event.target.value)}>
-            <MenuItem value="">Select meter</MenuItem> {/*questa è logica per associare ad ogni sensore il proprio tagname */}
-            {sensor === 'opzione1' && [ 
-              <MenuItem key="valore1" value="Power_P_1_7_0_W2.CV">Active power [kW]</MenuItem>,
-              <MenuItem key="valore2" value="Power_Q_3_7_0_W2.CV">Reactive power [kVAR]</MenuItem>,
-              <MenuItem key="valore3" value="Power_S_9_7_0_W2.CV">Apparent power [kVA]</MenuItem>
-            ]}
-            {sensor === 'opzione2' && [
-              <MenuItem key="valore4" value="Power_P_1_7_0_W4.CV">Active power [kW]</MenuItem>,
-              <MenuItem key="valore5" value="Power_Q_3_7_0_W4.CV">Reactive power [kVAR]</MenuItem>,
-              <MenuItem key="valore6" value="Power_S_9_7_0_W4.CV">Apparent power [kVA]</MenuItem>
-            ]}
-            {sensor === 'opzione3' && [
-              <MenuItem key="valore7" value="Power_P_1_7_0_W5.CV">Active power [kW]</MenuItem>,
-              <MenuItem key="valore8" value="Power_Q_3_7_0_W5.CV">Reactive power [kVAR]</MenuItem>,
-              <MenuItem key="valore9" value="Power_S_9_7_0_W5.CV">Apparent power [kVA]</MenuItem>
-            ]}
-            {sensor === 'opzione4' && [
-              <MenuItem key="valore10" value="Power_P_1_7_0_W6.CV">Active power [kW]</MenuItem>,
-              <MenuItem key="valore11" value="Power_Q_3_7_0_W6.CV">Reactive power [kVAR]</MenuItem>,
-              <MenuItem key="valore12" value="Power_S_9_7_0_W6.CV">Apparent power [kVA]</MenuItem>
-            ]}
+          <InputLabel id="demo-simple-select-label" disabled={!sensor}>Service id</InputLabel>
+          <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={serviceId} onChange={handleSelectServiceIdChange} disabled={!sensor}>{/*Disabilita la seconda select se la prima select non è selezionata*/}
+            <MenuItem value="1">1-Active power [kW] </MenuItem>{/*definisco i sensori */}
+            <MenuItem value="2">2-Apparent power [kVA]</MenuItem>
           </Select>
         </FormControl>
-        <Typography variant="h5" 
+        <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Historical data
         </Typography> {/*serve per il testo visualizzato in pagina*/}
@@ -399,8 +292,9 @@ const handleChange = (event) => {
           </LocalizationProvider>
         </Box>
         <Box textAlign={"center"} sx={{ marginTop: 5 }}>
-          <Button variant="contained" onClick={() => { sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend(); handleSubmitClick(); }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
-          <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}> 
+          <Button variant="contained" onClick={() => { sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend(); handleSubmitClick(); }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
+          {failMessage && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
+          <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
             <Line data={chart}></Line> {/*qui definisco il componente chart*/}
           </Box>
         </Box>

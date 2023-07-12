@@ -21,7 +21,7 @@ import Chart from './chart' //importo chart
 import DateAndTime from './dateAndTime' //importo data e orario per gli chart
 
 import ASMHQ from './ASMHQ'
-import DSO  from './DSO'
+import DSO from './DSO'
 import NEW from './NEW'
 
 
@@ -90,7 +90,8 @@ export default function BasicTabs() {
           <Tab label="Historical data" {...a11yProps(1)} />
           <Tab label="Forecasted data" {...a11yProps(2)} />
           <Tab label="Optimized data" {...a11yProps(3)} />
-          <Tab label="DSO Dashboard" {...a11yProps(4)} />
+          <Tab label="DSO" {...a11yProps(4)} />
+          <Tab label="Energiot" {...a11yProps(5)} />
         </Tabs>
       </Box>
 
@@ -99,22 +100,22 @@ export default function BasicTabs() {
           sx={{ marginTop: "40px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Grid 1 main parameters
         </Typography>
-        <TableHomeGrid1 title={'Value'} /> {/*components table*/ }
+        <TableHomeGrid1 title={'Value'} /> {/*components table*/}
         <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Grid 2 main parameters
         </Typography>
-        <TableHomeGrid2 /> {/*components table*/ }
+        <TableHomeGrid2 /> {/*components table*/}
         <Typography variant="h5"
           sx={{ marginTop: "30px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Data Source
         </Typography>
-        <TableDataSource /> {/*components table*/ }
+        <TableDataSource /> {/*components table*/}
         <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Services
         </Typography>
-        <TableServices /> {/*components table*/ }
+        <TableServices /> {/*components table*/}
       </TabPanel>
 
       <TabPanel value={value} index={1}> {/* historical data */}
@@ -122,42 +123,29 @@ export default function BasicTabs() {
           <Tabs value={valuesub} onChange={handleChange1} aria-label="basic example">
             <Tab label="End user" {...a11yProps(0)} />
             <Tab label="ASM HQ" {...a11yProps(1)} />
-            <Tab label="Nuovo" {...a11yProps(2)} />
           </Tabs>
         </Box>
 
         <TabPanel value={valuesub} index={0}>  {/* end user */}
-          <SelectEndUser /> {/*components select*/ }
-          <Typography variant="h5"
-            sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-            Historical data
-          </Typography>
-          <Box className="Inline">
-            <DateAndTime label="Start date/time" setValueDate={setValueDate} /> {/*components*/ }
-            <DateAndTime label="End date/time" setValueDate={setValueDate} />   {/*components*/ }
-          </Box>
-          <Chart /> {/*components*/ }
+          <NEW />
         </TabPanel>
 
         <TabPanel value={valuesub} index={1}> {/* asm hq */}
-          <ASMHQ /> {/*components*/ }
-          </TabPanel>
-          <TabPanel value={valuesub} index={2}> {/* asm hq */}
-          <NEW/>
+          <ASMHQ /> {/*components*/}
         </TabPanel>
       </TabPanel>
 
       <TabPanel value={value} index={2}> {/* forecast data*/}
-        <SelectForecasted /> {/*components select*/ }
+        <SelectForecasted /> {/*components select*/}
         <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Forecasted data (At the moment these data are not yet available)
         </Typography>
-        <Chart />{/*components*/ }
+        <Chart />{/*components*/}
       </TabPanel>
 
       <TabPanel value={value} index={3}> {/* optimized data */}
-        <SelectOptimized /> {/*components select*/ }
+        <SelectOptimized /> {/*components select*/}
         <Typography variant="h5"
           sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
           Optimized trend (Data are not available)
@@ -166,12 +154,15 @@ export default function BasicTabs() {
           <DateAndTime label="Start date/time" setValueDate={setValueDate} />
           <DateAndTime label="End date/time" setValueDate={setValueDate} />
         </Box>
-        <Chart />{/*components*/ }
+        <Chart />{/*components*/}
       </TabPanel>
       <TabPanel value={value} index={4}> {/* componenti nuovi */}
-      <DSO/>
-
+        <DSO />
       </TabPanel>
+      <TabPanel value={value} index={5}> {/* componenti nuovi */}
+        <NEW />
+      </TabPanel>
+
     </Box>
   );
 }
