@@ -23,9 +23,6 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useTheme } from '@mui/material/styles';
 
 
-
-
-
 ChartJS.register( //caratteristiche chart
   Title, Tooltip, LineElement, Legend,
   CategoryScale, LinearScale, PointElement
@@ -228,6 +225,40 @@ export default function CreateChart() {
       return errorResponse;
     }
   }
+  function chiamataKeycloack() {
+    console.log('URL:', 'http://localhost:8080/protectedresource');
+    fetch('http://localhost:8080/protectedresource')
+      .then(response => response.text())
+      .then(data => {
+        console.log(data); // Stampa la risposta del server nella console del browser
+        // Puoi eseguire ulteriori operazioni con i dati ricevuti dal server
+      })
+      .catch(error => {
+        console.group('Si è verificato un errore durante la chiamata a Keycloack:');
+        console.error('Tipo di errore:', error.constructor.name);
+        console.error('Messaggio di errore:', error.message);
+        console.error('Posizione nel codice: NEW.js, linea 234, funzione chiamataKeycloack');
+        console.groupEnd();
+        //throw error; // Rilancia l'errore per interrompere la catena delle Promises
+      });
+  }
+  
+  
+  function onClick() {
+    setTimeout(() => {
+      try {
+        chiamataKeycloack();
+      } catch (error) {
+        console.group('Si è verificato un errore durante la chiamata a Keycloack:');
+        console.error('Tipo di errore:', error.constructor.name);
+        console.error('Messaggio di errore:', error.message);
+        console.error('Posizione nel codice: NEW.js, linea 322, funzione onClick');
+        console.groupEnd();
+      }
+    }, 0);
+  }
+  
+  
 
 
   useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
@@ -292,7 +323,7 @@ export default function CreateChart() {
           </LocalizationProvider>
         </Box>
         <Box textAlign={"center"} sx={{ marginTop: 5 }}>
-          <Button variant="contained" onClick={() => { sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend(); handleSubmitClick(); }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
+          <Button variant="contained" onClick={() => {  onClick();/* sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend(); handleSubmitClick(); */ }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
           {failMessage && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
           <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
             <Line data={chart}></Line> {/*qui definisco il componente chart*/}
