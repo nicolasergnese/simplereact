@@ -183,7 +183,7 @@ export default function CreateChart() {
         setFailMessage(true);
       } else {
         setFailMessage(false);
-        const response = await fetch("http://localhost:8080/api/chartDateTimeNew", {
+        const response = await fetch("http://localhost:8080/api/chartDateTimeNewEnergiot", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -195,9 +195,9 @@ export default function CreateChart() {
           let tempDateTime = [];
           let tempValue = [];
           responseData.forEach((element) => {
-            tempDateTime.push(element.DATETIME); // Accesso al valore DateTime per ogni elemento
-            tempValue.push(element.VALUE);
-            //console.log(responseData);
+            // Accedi agli attributi ontime e value per ciascun elemento e aggiungili agli array temporanei
+            tempDateTime.push(element.metrics.ontime);
+            tempValue.push(element.metrics.value);
           });
           //console.log(tempValue)
           //console.log(tempDateTime)
@@ -225,41 +225,7 @@ export default function CreateChart() {
       return errorResponse;
     }
   }
-  function chiamataKeycloack() {
-    console.log('URL:', 'http://localhost:8080/protectedresource');
-    fetch('http://localhost:8080/protectedresource')
-      .then(response => response.text())
-      .then(data => {
-        console.log(data); // Stampa la risposta del server nella console del browser
-        // Puoi eseguire ulteriori operazioni con i dati ricevuti dal server
-      })
-      .catch(error => {
-        console.group('Si è verificato un errore durante la chiamata a Keycloack:');
-        console.error('Tipo di errore:', error.constructor.name);
-        console.error('Messaggio di errore:', error.message);
-        console.error('Posizione nel codice: NEW.js, linea 234, funzione chiamataKeycloack');
-        console.groupEnd();
-        //throw error; // Rilancia l'errore per interrompere la catena delle Promises
-      });
-  }
   
-  
-  function onClick() {
-    setTimeout(() => {
-      try {
-        chiamataKeycloack();
-      } catch (error) {
-        console.group('Si è verificato un errore durante la chiamata a Keycloack:');
-        console.error('Tipo di errore:', error.constructor.name);
-        console.error('Messaggio di errore:', error.message);
-        console.error('Posizione nel codice: NEW.js, linea 322, funzione onClick');
-        console.groupEnd();
-      }
-    }, 0);
-  }
-  
-  
-
 
   useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
     newChart();
@@ -323,7 +289,7 @@ export default function CreateChart() {
           </LocalizationProvider>
         </Box>
         <Box textAlign={"center"} sx={{ marginTop: 5 }}>
-          <Button variant="contained" onClick={() => { sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend();/* handleSubmitClick();onClick(); */ }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
+          <Button variant="contained" onClick={() => { sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend(); handleSubmitClick(); }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
           {failMessage && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
           <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
             <Line data={chart}></Line> {/*qui definisco il componente chart*/}
