@@ -114,11 +114,8 @@ export default function CreateDsoDahsboard() {
     //codice finito per select charging station id
 
     //inizio codice table richieste in verde
-    const [rows, setRows] = useState([])
+    const [rows, setRows] = useState([]);
 
-    function createDataRequest(request_id, start, end, energy) {
-        return { request_id, start, end, energy };
-    }
     function createDataRequestNew(request_id, start, end, energy) {
         return { request_id, start, end, energy };
     }
@@ -163,7 +160,6 @@ export default function CreateDsoDahsboard() {
     };
 
 
-    const [rowsRequest, setRowsRequest] = useState([]);
     const tablerequest = async () => {
         try {
             const response = await fetch("http://localhost:8080/api/tablerequeststart", {
@@ -188,7 +184,6 @@ export default function CreateDsoDahsboard() {
                     const formattedStartDateRequest = startDateRequest.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
                     //console.log(request.id);
                     //console.log(startRequest);
-                    addRowRequest(tempRequestID, formattedStartDateRequest, endRequest, energyRequest);
                     addRowRequestNew(tempRequestID, formattedStartDateRequest, endRequest, energyRequest);
                     console.log('tablerequeststart')
                 });
@@ -262,13 +257,6 @@ export default function CreateDsoDahsboard() {
                 message: "ERR_NETWORK",
             };
             return errorResponse;
-        }
-    };
-
-    const addRowRequest = (requestID, valueStartRequest, valueEndRequest, valueEnergyRequest) => {
-        if (requestID !== undefined && valueStartRequest !== undefined && valueEndRequest !== undefined && valueEnergyRequest !== undefined) {
-            const newRow = createDataRequest(requestID, valueStartRequest, valueEndRequest, valueEnergyRequest);
-            setRowsRequest(prevRows => [...prevRows, newRow]);
         }
     };
     //codice finito per table richieste in verde

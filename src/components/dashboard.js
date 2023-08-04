@@ -14,7 +14,6 @@ import TableServices from './table/tableServices'
 
 import SelectForecasted from './select/selectForecasted' //importo menu tendina per forecast
 import SelectOptimized from './select/selectOptimized'   //importo menu tendina per optimized
-import SelectEndUser from './select/selectEndUser'       //importo menu tendina per end user, sub dashboard
 
 import Chart from './chart' //importo chart
 
@@ -22,7 +21,7 @@ import DateAndTime from './dateAndTime' //importo data e orario per gli chart
 
 import ASMHQ from './ASMHQ'
 import DSO from './DSO'
-import NEW from './NEW'
+import ENDUSER from './endUser'
 
 
 import './Components.css';
@@ -127,7 +126,7 @@ export default function BasicTabs() {
         </Box>
 
         <TabPanel value={valuesub} index={0}>  {/* end user */}
-          <NEW />
+          <ENDUSER />
         </TabPanel>
 
         <TabPanel value={valuesub} index={1}> {/* asm hq */}
@@ -160,7 +159,7 @@ export default function BasicTabs() {
         <DSO />
       </TabPanel>
       <TabPanel value={value} index={5}> {/* componenti nuovi */}
-        <NEW />
+        <ENDUSER />
       </TabPanel>
 
     </Box>
