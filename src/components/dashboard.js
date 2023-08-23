@@ -22,6 +22,7 @@ import DateAndTime from './dateAndTime' //importo data e orario per gli chart
 import ASMHQ from './ASMHQ'
 import DSO from './DSO'
 import ENDUSER from './endUser'
+import FORECASTED from './forecasted'
 
 
 import './Components.css';
@@ -135,14 +136,9 @@ export default function BasicTabs() {
       </TabPanel>
 
       <TabPanel value={value} index={2}> {/* forecast data*/}
-        <SelectForecasted /> {/*components select*/}
-        <Typography variant="h5"
-          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Forecasted data (At the moment these data are not yet available)
-        </Typography>
-        <Chart />{/*components*/}
+        <FORECASTED/>
       </TabPanel>
-
+      
       <TabPanel value={value} index={3}> {/* optimized data */}
         <SelectOptimized /> {/*components select*/}
         <Typography variant="h5"
