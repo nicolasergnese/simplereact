@@ -34,6 +34,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 
+import { format } from 'date-fns';
+
+
 
 import './Components.css';
 
@@ -262,8 +265,9 @@ export default function CreateDsoDahsboard() {
     //codice finito per table richieste in verde
 
     //inizio codice table offers in blu
-    let winnerID = '';
-    let minExtraValue = '';
+    const [winnerID, setwinnerID] = useState('');
+    const [minExtraValue, setminExtraValue] = useState('');
+
     function createDataOffers(nameTab, auhthorTab, priceTab) {
         return { nameTab, auhthorTab, priceTab };
     }
@@ -277,14 +281,13 @@ export default function CreateDsoDahsboard() {
             } else {
                 setFailMessageWinning(false);
                 setRowsOffer([]);
-                startTimer();
                 sendDataIDUserToBackend();
                 getRequestToBackend();
                 fetch('http://localhost:8080/api/offers')
                     .then(response => response.json())
                     .then(data => {
-                        winnerID = data.winnerID;
-                        minExtraValue = data.minExtraValue;
+                        setwinnerID(data.winnerID);
+                        setminExtraValue(data.minExtraValue);
                         const dataOffer = data.dataOffer;
                         dataOffer.forEach(offer => {
                             // Accesso ai dati dell'offerta singolarmente
@@ -308,7 +311,7 @@ export default function CreateDsoDahsboard() {
                         //alert(`Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}. \n\nTo see the list of offers related to the request ID, click OK`);
                     })
                     .finally(() => {
-                        setProgressBar(100);
+                    
                     });
             }
         } catch (error) {
@@ -377,7 +380,9 @@ export default function CreateDsoDahsboard() {
                     const extraValue = data.extra;
                     setQuantityCard(extraValue[0]);
                     const startDate = new Date(extraValue[1] * 1000);
-                    const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile
+                    const formattedStartDate = format(new Date(startDate), 'yyyy-MM-dd HH:mm:ss');
+
+                    //const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile
                     setStartDateCard(formattedStartDate);
                     // Esempio di output nel console.log
                     console.log('End Date:', deadlineCard);
@@ -405,23 +410,6 @@ export default function CreateDsoDahsboard() {
     };
     //fine codice card
 
-    //inizio codice progress bar
-    const [progressBar, setProgressBar] = useState(0);
-
-    const startTimer = () => {
-        const interval = setInterval(() => {
-            setProgressBar(prevProgress => {
-                if (prevProgress < 100) {
-                    return prevProgress + 2;
-                } else {
-                    clearInterval(interval);
-                    return prevProgress;
-                }
-            });
-        }, 50);
-    };
-    //fine codice progressBar
-
     //inizio codice alertsDialog
     const [open, setOpen] = React.useState(false);
 
@@ -436,7 +424,7 @@ export default function CreateDsoDahsboard() {
         //console.log(maxPriceValue) //mi stampa quello che scrivo in maxPrice
         //console.log(chargingStationId)//mi stampa quello che scrivo in chargingStatioID
         tablerequest();
-    }, [valueStart, valueEnd, energyValue, maxPriceValue, chargingStationId]);
+    }, [valueStart, valueEnd, energyValue, maxPriceValue, chargingStationId, ,minExtraValue, winnerID]);
 
 
 
@@ -643,20 +631,8 @@ export default function CreateDsoDahsboard() {
                                                 onChange={handleInputChangeIDUser}
                                             />
                                             <Button onClick={() => { getWinningOffer() }} sx={{ marginTop: "20px" }} variant="contained">Get Winning Offer</Button>
-                                            <Button sx={{ marginTop: "20px", marginLeft: "20px" }} variant="contained">Unlock payment</Button>
                                             {failMessageWinning && <p style={{ color: 'red' }}>Please, fill in the ID_Request field.</p>}
                                         </Box>
-                                        <Box>
-                                            <Typography variant="h5"
-                                                sx={{ marginTop: "20px", marginLeft: "20px", color: "rgb(0, 0, 0)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-                                                Displaying the progress of energy supply:
-                                            </Typography>
-                                        </Box>
-                                        <div className="progress-bar-container"> {/* sesta figura, progressbar */}
-                                            <div className="progress-bar" style={{ width: `${progressBar}%` }}>
-                                                <span className="progress-text">{progressBar}%</span>
-                                            </div>
-                                        </div>
                                         <div>
                                             <Dialog
                                                 open={open}
@@ -667,13 +643,12 @@ export default function CreateDsoDahsboard() {
 
                                                 <DialogContent>
                                                     <DialogContentText id="alert-dialog-description">
-                                                        Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}.
+                                                        Referring to the choice of request ID =  {IDUser}, the winning bid in the relevant list is : # = {winnerID} - price = {minExtraValue}.
                                                         {"\n"}
                                                         To see the list of offers related to the request ID, click OK`
                                                     </DialogContentText>
                                                 </DialogContent>
                                                 <DialogActions>
-
                                                     <Button onClick={handleClose} autoFocus>
                                                         OK
                                                     </Button>
@@ -688,6 +663,5 @@ export default function CreateDsoDahsboard() {
                 </Box>
             </Box>
         </Box>
-
     )
 }

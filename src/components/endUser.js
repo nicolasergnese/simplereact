@@ -191,7 +191,7 @@ export default function CreateChart() {
         });
         if (response.ok) {
           const responseData = await response.json();
-          //console.log(responseData)
+          console.log(responseData)
           let tempDateTime = [];
           let tempValue = [];
           responseData.forEach((element) => {
