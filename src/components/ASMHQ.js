@@ -282,7 +282,7 @@ export default function CreateChart() {
           </LocalizationProvider>
         </Box>
         <Box textAlign={"center"} sx={{ marginTop: 5 }}>
-          <Button variant="contained" onClick={() => { sendPoweDateStartAndDateEndBackend(); handleSubmitClick(); setMeter(''); setPower('') }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
+          <Button variant="contained" onClick={() => { sendPoweDateStartAndDateEndBackend(); handleSubmitClick() }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
           {failMessage && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
           <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
             <Line data={chart}></Line> {/*qui definisco il componente chart*/}

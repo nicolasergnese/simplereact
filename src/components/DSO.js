@@ -102,9 +102,9 @@ export default function CreateDsoDahsboard() {
     //inizio codice per maxPrice
 
 
-    const handleInputChangeMaxPrice = (event) => { //serve per modificare il valore e salvarlo
+    /* const handleInputChangeMaxPrice = (event) => { //serve per modificare il valore e salvarlo
         setMaxPriceValue(event.target.value);
-    };
+    }; */
     //codice  finito per maxPrice
 
 
@@ -213,9 +213,9 @@ export default function CreateDsoDahsboard() {
 
     const handleSubmitClick = async () => {
         try {
-            if (energyValue === '' || chargingStationId === '' || maxPriceValue === '' || valueStart === '' || valueEnd === '') {
-                setFailMessageSubmit(true);
-            } else {
+            /* if (energyValue === '' || chargingStationId === '' || maxPriceValue === '' || valueStart === '' || valueEnd === '') {
+                setFailMessageSubmit(true); 
+            } else {*/
                 setFailMessageSubmit(false);
                 const response = await fetch("http://localhost:8080/api/tablerequest", {
                     method: "GET",
@@ -251,7 +251,7 @@ export default function CreateDsoDahsboard() {
                     };
                     return errorResponse;
                 }
-            }
+            
         } catch (error) {
             // handle network error
             console.log(error);
@@ -469,7 +469,7 @@ export default function CreateDsoDahsboard() {
                                 onChange={handleInputChangeEnergy}
                             />
                             <Box> {/*qui definisco il componente maxPrice*/}
-                                <TextField
+                                {/* <TextField
                                     label="MaxPrice:"
                                     id="outlined-start-adornment"
                                     sx={{ m: 1, width: '25ch' }}
@@ -478,20 +478,19 @@ export default function CreateDsoDahsboard() {
                                     }}
                                     value={maxPriceValue}
                                     onChange={handleInputChangeMaxPrice}
-                                />
+                                /> */}
                                 <Box sx={{ minWidth: 60 }}> {/*box per la select, menu a tendina, charging station id */}
                                     <FormControl sx={{ m: 1, width: '25ch' }} size="small">
                                         <InputLabel id="demo-simple-select-label">Charging Station ID</InputLabel>
                                         <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={chargingStationId} onChange={handleSelect1Change}>
-                                            <MenuItem value="opzione1">2</MenuItem>{/*definisco i sensori */}
-                                            <MenuItem value="opzione2">4</MenuItem>
-                                            <MenuItem value="opzione3">5</MenuItem>
-                                            <MenuItem value="opzione4">6</MenuItem>
+                                            <MenuItem value="opzione1">18</MenuItem>{/*definisco i sensori */}
+                                            <MenuItem value="opzione2">24</MenuItem>
+                                            <MenuItem value="opzione3">25</MenuItem>
                                         </Select>
                                     </FormControl>
                                     <Box sx={{ marginLeft: "10px" }}>
                                         <Box>
-                                            <Button onClick={() => { sendDataEnergyValueToBackend(); handleSubmitClick(); setEnergyValue(''); setMaxPriceValue(''); setChargingStationId('') }} sx={{ marginTop: "10px", marginLeft: "100px" }} variant="contained">Submit</Button>
+                                            <Button onClick={() => { sendDataEnergyValueToBackend(); handleSubmitClick(); setEnergyValue(''); setMaxPriceValue(''); setChargingStationId(''); setValueStart(''); setValueEnd('') }} sx={{ marginTop: "10px", marginLeft: "100px" }} variant="contained">Submit</Button>
                                             {failMessageSubmit && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
                                             <Box sx={{ marginTop: "20px" }}>
                                             </Box>
@@ -642,10 +641,11 @@ export default function CreateDsoDahsboard() {
                                             >
 
                                                 <DialogContent>
-                                                    <DialogContentText id="alert-dialog-description">
-                                                        Referring to the choice of request ID =  {IDUser}, the winning bid in the relevant list is : # = {winnerID} - price = {minExtraValue}.
+                                                    <DialogContentText sx={{ fontSize: "35px" }} id="alert-dialog-description">
+                                                        Winner for the Request {IDUser} is Offer {winnerID}
+                                                       {/*  Referring to the choice of request ID =  {IDUser}, the winning bid in the relevant list is : # = {winnerID} - price = {minExtraValue}. */}
                                                         {"\n"}
-                                                        To see the list of offers related to the request ID, click OK`
+                                                        {/* To see the list of offers related to the request ID, click OK` */}
                                                     </DialogContentText>
                                                 </DialogContent>
                                                 <DialogActions>
