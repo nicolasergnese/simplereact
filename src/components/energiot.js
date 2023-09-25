@@ -39,7 +39,7 @@ export default function CreateChart() {
     const [labelCharter, setLabelCharter] = useState('')//per settare la legenda del charter
     const [numbers, setNumbers] = useState([]) //stato per modificare le y, ossia il value
     const [dateTime, setDateTime] = useState([]) //stato per modificare le x, ossia il dateTime
-    const [failMessage, setFailMessage] = useState(false)
+    const [numberRecord, setNumberRecord] = useState(''); //attributo per le select, menu a tendina
 
 
     const ITEM_HEIGHT = 48;
@@ -54,27 +54,7 @@ export default function CreateChart() {
     };
 
     const sensorID = [ //nomi dei sensori
-        'BBB6150',
-        'BBB6152',
-        'BBB6154',
-        'BBB6155',
-        'BBB6156',
-        'BBB6157',
-        'BBB6158',
-        'BBB6159',
-        'BBB6160',
-        'BBB6161',
-        'BBB6162',
-        'BBB6163',
-        'BBB6164',
-        'BBB6166',
-        'BBB6167',
-        'BBB6168',
-        'BBB6169',
-        'BBB6170',
-        'BBB6171',
-        'BBB6173',
-        'BBB6174',
+        'ASMT03-0x0006',
     ];
 
 
@@ -101,10 +81,16 @@ export default function CreateChart() {
         // Effettua le modifiche ai valori della seconda select in base alla selezione nella prima select
     };
 
-    const sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
-        fetch('http://localhost:8080/api/sensorIdServiceIdDateStartAndDateend', { //collegamento back-end
+    const handleSelectNumberRecordChange = (event) => { //funzione per settare lo stato iniziale
+        const value = event.target.value;
+        setNumberRecord(value);
+        // Effettua le modifiche ai valori della seconda select in base alla selezione nella prima select
+    };
+
+    const sendSelectNumberRecord = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
+        fetch('http://localhost:8080/api/numberRecord', { //collegamento back-end
             method: 'POST',
-            body: JSON.stringify({ sensor, serviceId }),
+            body: JSON.stringify({ numberRecord }),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -137,18 +123,17 @@ export default function CreateChart() {
 
     const changeLabels = () => {
         if (serviceId === '1') {
-            setLabelCharter('Active power [kW]')
+            setLabelCharter('o.metric.current_calc')
         }
         else if (serviceId === '2') {
-            setLabelCharter('Apparent power [kVA]')
+            setLabelCharter('o.metric.temperature.remote')
         }
     }
-
 
     function newChart() {
         changeLabels();
         setChart({ //funzione bottone per cambiare grafico
-            labels: numbers, // asse x
+            labels: dateTime, // asse x
             datasets: [
                 {
                     label: labelCharter,
@@ -165,54 +150,80 @@ export default function CreateChart() {
         })
     }
 
-
-    const handleSubmitClick = async () => {
+    const handleSubmitClick = async () => { //funzione per riempire il charter con il bottone search
         try {
-            const response = await fetch("http://localhost:8080/api/chartDateTimeForecasted", {
+            const response = await fetch("http://localhost:8080/api/chartDateTimeEnergiot", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log(responseData)
+                let tempDateTime = [];
+                let tempValue = [];
+                if (serviceId === '1') {
+                    responseData.forEach((element) => {
+                        console.log(element['o.data.timestamp'])
+                        const date = new Date(element['o.data.timestamp'] * 1000); // Moltiplica per 1000 per convertire da secondi a millisecondi
+                        const options = {
+                            year: 'numeric',
+                            month: '2-digit', // Due cifre per il mese
+                            day: '2-digit',   // Due cifre per il giorno
+                            hour: '2-digit',  // Due cifre per l'ora
+                            minute: '2-digit', // Due cifre per i minuti
+                            second: '2-digit', // Due cifre per i secondi
+                        };
+                        const formattedDate = date.toLocaleString('it-IT', options); // Specifica il codice di lingua "it-IT"
+                        //const formattedDate = date.toLocaleDateString(); // Puoi personalizzare il formato se lo desideri
+                        console.log(formattedDate)
+                        // Accedi agli attributi ontime e value per ciascun elemento e aggiungili agli array temporanei
+                        tempDateTime.push(formattedDate);
+                        tempValue.push(element['o.metric.current_calc']);
+                    });
+                } else if (serviceId === '2') {
+                    responseData.forEach((element) => {
+                        console.log(element['o.data.timestamp'])
+                        const date = new Date(element['o.data.timestamp'] * 1000); // Moltiplica per 1000 per convertire da secondi a millisecondi
+                        const options = {
+                            year: 'numeric',
+                            month: '2-digit', // Due cifre per il mese
+                            day: '2-digit',   // Due cifre per il giorno
+                            hour: '2-digit',  // Due cifre per l'ora
+                            minute: '2-digit', // Due cifre per i minuti
+                            second: '2-digit', // Due cifre per i secondi
+                        };
+                        const formattedDate = date.toLocaleString('it-IT', options); // Specifica il codice di lingua "it-IT"
+                        //const formattedDate = date.toLocaleDateString(); // Puoi personalizzare il formato se lo desideri
+                        console.log(formattedDate)
+                        // Accedi agli attributi ontime e value per ciascun elemento e aggiungili agli array temporanei
+                        tempDateTime.push(formattedDate);
+                        tempValue.push(element['o.metric.temperature.remote']);
+                        //tempValue.push(element['o.metric.temperature.ambient']);
+                    });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const responseData = await response.json();
-            console.log('Response:', responseData);
-
-            const predictionArray = [];
-
-            // Estrai i numeri dalla stringa di previsione utilizzando una espressione regolare
-            const predictionMatches = responseData.Prediction.match(/-?\d+\.\d+/g);
-
-            if (predictionMatches) {
-                for (const match of predictionMatches) {
-                    const predictionValue = parseFloat(match);
-                    if (!isNaN(predictionValue)) {
-                        predictionArray.push(predictionValue);
-                    }
                 }
-            } else {
-                console.error('Nessun valore numerico di previsione trovato.');
+                console.log(tempValue)
+                console.log(tempDateTime)
+                setNumbers(tempValue); //setto valori per il grafico nuovo
+                setDateTime(tempDateTime)
+                newChart(); //avvio funzione per cambiare stato allo chart
+                return responseData;
             }
-
-            console.log('Prediction Array:', predictionArray);
-
-            if (predictionArray.length > 0) {
-                setNumbers(predictionArray);
-                newChart(); // Avvia la funzione per cambiare stato allo chart
-            }
-        } catch (error) {
-            console.error('Errore durante la chiamata al backend:', error);
         }
-    };
-
-
-
-
-
+        catch (error) {
+            // handle network error
+            console.log(error);
+            const errorResponse = {
+                status: 503,
+                message: "ERR_NETWORK",
+            };
+            return errorResponse;
+        }
+    }
+    //timestamp = element['o.data.timestamp'];
+    //currentCalc = element['o.metric.current_calc'];
 
     useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
         newChart();
@@ -247,17 +258,25 @@ export default function CreateChart() {
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                     <InputLabel id="demo-simple-select-label" disabled={!sensor}>Service id</InputLabel>
                     <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={serviceId} onChange={handleSelectServiceIdChange} disabled={!sensor}>{/*Disabilita la seconda select se la prima select non è selezionata*/}
-                        <MenuItem value="1">1-Active power [kW] </MenuItem>{/*definisco i sensori */}
-                        <MenuItem value="2">2-Apparent power [kVA]</MenuItem>
+                        <MenuItem value="1">o.metric.current_calc </MenuItem>{/*definisco i sensori */}
+                        <MenuItem value="2">o.metric.temperature.remote</MenuItem>
+                        {/* <MenuItem value="2">o.metric.temperature.ambient</MenuItem> */}
                     </Select>
                 </FormControl>
+                {/*<Box> {/*box per la seconda select, menu a tendina, power 
+                    {/* <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                        <InputLabel id="demo-simple-select-label" disabled={!sensor}>Last n record</InputLabel>
+                        <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={serviceId} onChange={handleSelectServiceIdChange} disabled={!sensor}>
+                            <MenuItem value="1">o.metric.current_calc </MenuItem>{/*definisco i sensori 
+                            <MenuItem value="2">o.metric.temperature.remote</MenuItem>
+                        </Select>
+                    </FormControl> */}
                 <Typography variant="h5"
                     sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-                    Forecasted data
+                    Last day
                 </Typography> {/*serve per il testo visualizzato in pagina*/}
                 <Box textAlign={"center"} sx={{ marginTop: 5 }}>
                     <Button variant="contained" onClick={() => { handleSubmitClick(); }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
-                    {failMessage && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
                     <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
                         <Line data={chart}></Line> {/*qui definisco il componente chart*/}
                     </Box>

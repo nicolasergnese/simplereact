@@ -148,14 +148,14 @@ export default function CreateChart() {
   });
 
   const changeLabels = () => {
-        if (serviceId === '1') {
-          setLabelCharter('Active power [kW]')
-        }
-        else if (serviceId === '2') {
-          setLabelCharter('Apparent power [kVA]')
-        }
+    /*  if (serviceId === '1') {
+       setLabelCharter('Active power [kW]')
+     }
+     else if (serviceId === '2') {
+       setLabelCharter('Apparent power [kVA]')
+     } */
   }
-  
+
 
   function newChart() {
     changeLabels();
@@ -225,7 +225,7 @@ export default function CreateChart() {
       return errorResponse;
     }
   }
-  
+
 
   useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
     newChart();
@@ -289,7 +289,7 @@ export default function CreateChart() {
           </LocalizationProvider>
         </Box>
         <Box textAlign={"center"} sx={{ marginTop: 5 }}>
-          <Button variant="contained" onClick={() => { sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend(); handleSubmitClick(); setSensor(''); setServiceId(''); setValueEnd(''); setValueStart('')  }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
+          <Button variant="contained" onClick={() => { sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend(); handleSubmitClick(); setSensor(''); setServiceId('') }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
           {failMessage && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
           <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
             <Line data={chart}></Line> {/*qui definisco il componente chart*/}

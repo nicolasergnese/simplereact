@@ -23,6 +23,7 @@ import ASMHQ from './ASMHQ'
 import DSO from './DSO'
 import ENDUSER from './endUser'
 import FORECASTED from './forecasted'
+import ENERGIOT from './energiot'
 
 
 import './Components.css';
@@ -136,9 +137,9 @@ export default function BasicTabs() {
       </TabPanel>
 
       <TabPanel value={value} index={2}> {/* forecast data*/}
-        <FORECASTED/>
+        <FORECASTED />
       </TabPanel>
-      
+
       <TabPanel value={value} index={3}> {/* optimized data */}
         <SelectOptimized /> {/*components select*/}
         <Typography variant="h5"
@@ -155,7 +156,7 @@ export default function BasicTabs() {
         <DSO />
       </TabPanel>
       <TabPanel value={value} index={5}> {/* componenti nuovi */}
-        <ENDUSER />
+        <ENERGIOT />
       </TabPanel>
 
     </Box>

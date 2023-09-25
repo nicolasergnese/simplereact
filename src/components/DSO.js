@@ -216,42 +216,42 @@ export default function CreateDsoDahsboard() {
             /* if (energyValue === '' || chargingStationId === '' || maxPriceValue === '' || valueStart === '' || valueEnd === '') {
                 setFailMessageSubmit(true); 
             } else {*/
-                setFailMessageSubmit(false);
-                const response = await fetch("http://localhost:8080/api/tablerequest", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+            setFailMessageSubmit(false);
+            const response = await fetch("http://localhost:8080/api/tablerequest", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response.ok) {
+                setRows([])
+                const responseData = await response.json(); //prendo lista offers
+                //console.log(responseData);
+                const requests = responseData.requests;//prendo le request 
+                //console.log('request', requests)
+                requests.forEach((request) => { //prendo i dati da ciascuna request e setto attributi taballe
+                    const tempRequestID = request.id;
+                    const tempDateEnd = request.deadline;
+                    const extraValues = request.extra;
+                    const endRequest = tempDateEnd;
+                    const energyRequest = extraValues[0];
+                    const startDate = new Date(extraValues[1] * 1000);
+                    const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
+                    //console.log(request.id);
+                    //console.log(startRequest);
+                    addRowRequestNew(tempRequestID, formattedStartDate, endRequest, energyRequest);
                 });
-                if (response.ok) {
-                    setRows([])
-                    const responseData = await response.json(); //prendo lista offers
-                    //console.log(responseData);
-                    const requests = responseData.requests;//prendo le request 
-                    //console.log('request', requests)
-                    requests.forEach((request) => { //prendo i dati da ciascuna request e setto attributi taballe
-                        const tempRequestID = request.id;
-                        const tempDateEnd = request.deadline;
-                        const extraValues = request.extra;
-                        const endRequest = tempDateEnd;
-                        const energyRequest = extraValues[0];
-                        const startDate = new Date(extraValues[1] * 1000);
-                        const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile con data e ora
-                        //console.log(request.id);
-                        //console.log(startRequest);
-                        addRowRequestNew(tempRequestID, formattedStartDate, endRequest, energyRequest);
-                    });
-                    return responseData;
-                } else {
-                    // handle error
-                    console.log(response);
-                    const errorResponse = {
-                        status: response.status,
-                        message: response.statusText,
-                    };
-                    return errorResponse;
-                }
-            
+                return responseData;
+            } else {
+                // handle error
+                console.log(response);
+                const errorResponse = {
+                    status: response.status,
+                    message: response.statusText,
+                };
+                return errorResponse;
+            }
+
         } catch (error) {
             // handle network error
             console.log(error);
@@ -311,7 +311,7 @@ export default function CreateDsoDahsboard() {
                         //alert(`Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}. \n\nTo see the list of offers related to the request ID, click OK`);
                     })
                     .finally(() => {
-                    
+
                     });
             }
         } catch (error) {
@@ -424,7 +424,7 @@ export default function CreateDsoDahsboard() {
         //console.log(maxPriceValue) //mi stampa quello che scrivo in maxPrice
         //console.log(chargingStationId)//mi stampa quello che scrivo in chargingStatioID
         tablerequest();
-    }, [valueStart, valueEnd, energyValue, maxPriceValue, chargingStationId, ,minExtraValue, winnerID]);
+    }, [valueStart, valueEnd, energyValue, maxPriceValue, chargingStationId, , minExtraValue, winnerID]);
 
 
 
@@ -643,7 +643,7 @@ export default function CreateDsoDahsboard() {
                                                 <DialogContent>
                                                     <DialogContentText sx={{ fontSize: "35px" }} id="alert-dialog-description">
                                                         Winner for the Request {IDUser} is Offer {winnerID}
-                                                       {/*  Referring to the choice of request ID =  {IDUser}, the winning bid in the relevant list is : # = {winnerID} - price = {minExtraValue}. */}
+                                                        {/*  Referring to the choice of request ID =  {IDUser}, the winning bid in the relevant list is : # = {winnerID} - price = {minExtraValue}. */}
                                                         {"\n"}
                                                         {/* To see the list of offers related to the request ID, click OK` */}
                                                     </DialogContentText>
