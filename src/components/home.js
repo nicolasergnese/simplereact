@@ -39,7 +39,7 @@ export default function CreateChart() {
     const [labelCharter, setLabelCharter] = useState('')//per settare la legenda del charter
     const [numbers, setNumbers] = useState([]) //stato per modificare le y, ossia il value
     const [dateTime, setDateTime] = useState([]) //stato per modificare le x, ossia il dateTime
-    const [numberRecord, setNumberRecord] = useState(''); //attributo per le select, menu a tendina
+    const [numberStep, setNumberStep] = useState(''); //attributo per le select, menu a tendina
 
 
     const ITEM_HEIGHT = 48;
@@ -53,8 +53,16 @@ export default function CreateChart() {
         },
     };
 
+    const numberStepID = [];
+
+    for (let i = 1; i <= 50; i++) {
+        numberStepID.push(i);
+    }
+
+
     const sensorID = [ //nomi dei sensori
-        'ASMT03-0x0006',
+        'D_491',
+        'I_486',
     ];
 
 
@@ -67,6 +75,15 @@ export default function CreateChart() {
         };
     }
 
+    function getStylesNumberStep(name, numberStep, themeNumberStep) {
+        return {
+            fontWeight:
+                sensor === numberStepID
+                    ? themeNumberStep.typography.fontWeightRegular
+                    : themeNumberStep.typography.fontWeightMedium,
+        };
+    }
+
     const theme = useTheme();
     const handleChange = (event) => {
         const {
@@ -75,22 +92,26 @@ export default function CreateChart() {
         setSensor(value);
     };
 
+    const themeNumberStep = useTheme();
+    const handleChangeNumberStep = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setNumberStep(value);
+    };
+
     const handleSelectServiceIdChange = (event) => { //funzione per settare lo stato iniziale
         const value = event.target.value;
         setServiceId(value);
         // Effettua le modifiche ai valori della seconda select in base alla selezione nella prima select
     };
 
-    const handleSelectNumberRecordChange = (event) => { //funzione per settare lo stato iniziale
-        const value = event.target.value;
-        setNumberRecord(value);
-        // Effettua le modifiche ai valori della seconda select in base alla selezione nella prima select
-    };
 
-    const sendSelectNumberRecord = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
-        fetch('http://localhost:8080/api/numberRecord', { //collegamento back-end
+    const sendSelectNumberStep = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
+        console.log(numberStep)
+        fetch('http://localhost:8080/api/numberStep', { //collegamento back-end
             method: 'POST',
-            body: JSON.stringify({ numberRecord }),
+            body: JSON.stringify({ numberStep }),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -152,7 +173,7 @@ export default function CreateChart() {
 
     const handleSubmitClick = async () => { //funzione per riempire il charter con il bottone search
         try {
-            const response = await fetch("http://localhost:8080/api/chartDateTimeEnergiot", {
+            const response = await fetch("http://localhost:8080/api/chartDateTimeHome", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -163,52 +184,71 @@ export default function CreateChart() {
                 console.log(responseData)
                 let tempDateTime = [];
                 let tempValue = [];
-                if (serviceId === '1') {
-                    responseData.forEach((element) => {
-                        console.log(element['o.data.timestamp'])
-                        const date = new Date(element['o.data.timestamp'] * 1000); // Moltiplica per 1000 per convertire da secondi a millisecondi
-                        const options = {
-                            year: 'numeric',
-                            month: '2-digit', // Due cifre per il mese
-                            day: '2-digit',   // Due cifre per il giorno
-                            hour: '2-digit',  // Due cifre per l'ora
-                            minute: '2-digit', // Due cifre per i minuti
-                            second: '2-digit', // Due cifre per i secondi
-                        };
-                        const formattedDate = date.toLocaleString('it-IT', options); // Specifica il codice di lingua "it-IT"
-                        //const formattedDate = date.toLocaleDateString(); // Puoi personalizzare il formato se lo desideri
-                        console.log(formattedDate)
-                        // Accedi agli attributi ontime e value per ciascun elemento e aggiungili agli array temporanei
-                        tempDateTime.push(formattedDate);
-                        tempValue.push(element['o.metric.current_calc']);
-                    });
-                } else if (serviceId === '2') {
-                    responseData.forEach((element) => {
-                        console.log(element['o.data.timestamp'])
-                        const date = new Date(element['o.data.timestamp'] * 1000); // Moltiplica per 1000 per convertire da secondi a millisecondi
-                        const options = {
-                            year: 'numeric',
-                            month: '2-digit', // Due cifre per il mese
-                            day: '2-digit',   // Due cifre per il giorno
-                            hour: '2-digit',  // Due cifre per l'ora
-                            minute: '2-digit', // Due cifre per i minuti
-                            second: '2-digit', // Due cifre per i secondi
-                        };
-                        const formattedDate = date.toLocaleString('it-IT', options); // Specifica il codice di lingua "it-IT"
-                        //const formattedDate = date.toLocaleDateString(); // Puoi personalizzare il formato se lo desideri
-                        console.log(formattedDate)
-                        // Accedi agli attributi ontime e value per ciascun elemento e aggiungili agli array temporanei
-                        tempDateTime.push(formattedDate);
-                        tempValue.push(element['o.metric.temperature.remote']);
-                        //tempValue.push(element['o.metric.temperature.ambient']);
-                    });
+                if (sensor === 'D_491') {
+                    if (serviceId === '1') {
+                        const powerValues = responseData.D_491.power;
+                        powerValues.forEach(value => {
+                            tempValue.push(value);
+                        })
+                        for (let i = 1; i <= tempValue.length; i++) {
+                            tempDateTime.push(i);
+                        }
+                    } else if (serviceId === '2') {
+                        const voltageValues = responseData.D_491.voltage;
+                        voltageValues.forEach(value => {
+                            tempValue.push(value);
+                        })
+                        for (let i = 1; i <= tempValue.length; i++) {
+                            tempDateTime.push(i);
+                        }
+                    } else if (serviceId === '3') {
+                        const currentValues = responseData.D_491.current;
+                        currentValues.forEach(value => {
+                            tempValue.push(value);
+                        })
+                        for (let i = 1; i <= tempValue.length; i++) {
+                            tempDateTime.push(i);
+                        }
+                    }
+                    console.log(tempValue)
+                    console.log(tempDateTime)
+                    setNumbers(tempValue); //setto valori per il grafico nuovo
+                    setDateTime(tempDateTime)
+                    newChart(); //avvio funzione per cambiare stato allo chart
+                    return responseData;
+                } else if (sensor === 'I_486') {
+                    if (serviceId === '1') {
+                        const powerValues = responseData.I_486.power;
+                        powerValues.forEach(value => {
+                            tempValue.push(value);
+                        })
+                        for (let i = 1; i <= tempValue.length; i++) {
+                            tempDateTime.push(i);
+                        }
+                    } else if (serviceId === '2') {
+                        const voltageValues = responseData.I_486.voltage;
+                        voltageValues.forEach(value => {
+                            tempValue.push(value);
+                        })
+                        for (let i = 1; i <= tempValue.length; i++) {
+                            tempDateTime.push(i);
+                        }
+                    } else if (serviceId === '3') {
+                        const currentValues = responseData.I_486.current;
+                        currentValues.forEach(value => {
+                            tempValue.push(value);
+                        })
+                        for (let i = 1; i <= tempValue.length; i++) {
+                            tempDateTime.push(i);
+                        }
+                    }
+                    console.log(tempValue)
+                    console.log(tempDateTime)
+                    setNumbers(tempValue); //setto valori per il grafico nuovo
+                    setDateTime(tempDateTime)
+                    newChart(); //avvio funzione per cambiare stato allo chart
+                    return responseData;
                 }
-                console.log(tempValue)
-                console.log(tempDateTime)
-                setNumbers(tempValue); //setto valori per il grafico nuovo
-                setDateTime(tempDateTime)
-                newChart(); //avvio funzione per cambiare stato allo chart
-                return responseData;
             }
         }
         catch (error) {
@@ -221,8 +261,7 @@ export default function CreateChart() {
             return errorResponse;
         }
     }
-    //timestamp = element['o.data.timestamp'];
-    //currentCalc = element['o.metric.current_calc'];
+
 
     useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
         newChart();
@@ -257,32 +296,45 @@ export default function CreateChart() {
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                     <InputLabel id="demo-simple-select-label" disabled={!sensor}>Service id</InputLabel>
                     <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={serviceId} onChange={handleSelectServiceIdChange} disabled={!sensor}>{/*Disabilita la seconda select se la prima select non è selezionata*/}
-                        <MenuItem value="1">o.metric.current_calc </MenuItem>{/*definisco i sensori */}
-                        <MenuItem value="2">o.metric.temperature.remote</MenuItem>
-                        {/* <MenuItem value="2">o.metric.temperature.ambient</MenuItem> */}
+                        <MenuItem value="1">Power </MenuItem>{/*definisco i sensori */}
+                        <MenuItem value="2">Voltage</MenuItem>
+                        <MenuItem value="3">Current</MenuItem>
                     </Select>
                 </FormControl>
-                {/*<Box> {/*box per la seconda select, menu a tendina, power 
-                    {/* <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                        <InputLabel id="demo-simple-select-label" disabled={!sensor}>Last n record</InputLabel>
-                        <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={serviceId} onChange={handleSelectServiceIdChange} disabled={!sensor}>
-                            <MenuItem value="1">o.metric.current_calc </MenuItem>{/*definisco i sensori 
-                            <MenuItem value="2">o.metric.temperature.remote</MenuItem>
+                <Box>
+                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                        <InputLabel id="demo-multiple-name-label">Number step</InputLabel>
+                        <Select
+                            labelId="demo-multiple-name-label"
+                            id="demo-multiple-name"
+                            value={numberStep}
+                            onChange={handleChangeNumberStep}
+                            input={<OutlinedInput label="Number step" />}
+                            MenuProps={MenuProps}
+                        >
+                            {numberStepID.map((name) => (
+                                <MenuItem
+                                    key={name}
+                                    value={name}
+                                    style={getStylesNumberStep(name, numberStep, themeNumberStep)}
+                                >
+                                    {name}
+                                </MenuItem>
+                            ))}
                         </Select>
-                    </FormControl> */}
-                <Typography variant="h5"
-                    sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-                    Last n record
-                </Typography> {/*serve per il testo visualizzato in pagina*/}
-                <Box textAlign={"center"} sx={{ marginTop: 5 }}>
-                    <Button variant="contained" onClick={() => { handleSubmitClick(); }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
-                    <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
-                        <Line data={chart}></Line> {/*qui definisco il componente chart*/}
+                    </FormControl>
+                    <Typography variant="h5"
+                        sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
+                        Last n record
+                    </Typography> {/*serve per il testo visualizzato in pagina*/}
+                    <Box textAlign={"center"} sx={{ marginTop: 5 }}>
+                        <Button variant="contained" onClick={() => { sendSelectNumberStep(); handleSubmitClick(); }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
+                        <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
+                            <Line data={chart}></Line> {/*qui definisco il componente chart*/}
+                        </Box>
                     </Box>
                 </Box>
             </Box>
         </Box>
     );
 }
-
-

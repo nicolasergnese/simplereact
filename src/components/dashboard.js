@@ -24,6 +24,7 @@ import DSO from './DSO'
 import ENDUSER from './endUser'
 import FORECASTED from './forecasted'
 import ENERGIOT from './energiot'
+import HOME from './home'
 
 
 import './Components.css';
@@ -97,26 +98,7 @@ export default function BasicTabs() {
       </Box>
 
       <TabPanel value={value} index={0}> {/* home */}
-        <Typography variant="h5"
-          sx={{ marginTop: "40px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Grid 1 main parameters
-        </Typography>
-        <TableHomeGrid1 title={'Value'} /> {/*components table*/}
-        <Typography variant="h5"
-          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Grid 2 main parameters
-        </Typography>
-        <TableHomeGrid2 /> {/*components table*/}
-        <Typography variant="h5"
-          sx={{ marginTop: "30px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Data Source
-        </Typography>
-        <TableDataSource /> {/*components table*/}
-        <Typography variant="h5"
-          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Services
-        </Typography>
-        <TableServices /> {/*components table*/}
+        <HOME />
       </TabPanel>
 
       <TabPanel value={value} index={1}> {/* historical data */}
