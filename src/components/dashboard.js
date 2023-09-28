@@ -24,7 +24,7 @@ import DSO from './DSO'
 import ENDUSER from './endUser'
 import FORECASTED from './forecasted'
 import ENERGIOT from './energiot'
-import HOME from './home'
+import OPTIMIZED from './optimized'
 
 
 import './Components.css';
@@ -98,7 +98,7 @@ export default function BasicTabs() {
       </Box>
 
       <TabPanel value={value} index={0}> {/* home */}
-        <HOME />
+        <OPTIMIZED />
       </TabPanel>
 
       <TabPanel value={value} index={1}> {/* historical data */}
@@ -123,16 +123,7 @@ export default function BasicTabs() {
       </TabPanel>
 
       <TabPanel value={value} index={3}> {/* optimized data */}
-        <SelectOptimized /> {/*components select*/}
-        <Typography variant="h5"
-          sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
-          Optimized trend (Data are not available)
-        </Typography>
-        <Box className="Inline">
-          <DateAndTime label="Start date/time" setValueDate={setValueDate} />
-          <DateAndTime label="End date/time" setValueDate={setValueDate} />
-        </Box>
-        <Chart />{/*components*/}
+        <OPTIMIZED />
       </TabPanel>
       <TabPanel value={value} index={4}> {/* componenti nuovi */}
         <DSO />
