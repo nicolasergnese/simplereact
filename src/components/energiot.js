@@ -221,8 +221,6 @@ export default function CreateChart() {
             return errorResponse;
         }
     }
-    //timestamp = element['o.data.timestamp'];
-    //currentCalc = element['o.metric.current_calc'];
 
     useEffect(() => { //per evitare di cliccare due volte il bottone per generare il grafico
         newChart();
@@ -262,14 +260,6 @@ export default function CreateChart() {
                         {/* <MenuItem value="2">o.metric.temperature.ambient</MenuItem> */}
                     </Select>
                 </FormControl>
-                {/*<Box> {/*box per la seconda select, menu a tendina, power 
-                    {/* <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                        <InputLabel id="demo-simple-select-label" disabled={!sensor}>Last n record</InputLabel>
-                        <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={serviceId} onChange={handleSelectServiceIdChange} disabled={!sensor}>
-                            <MenuItem value="1">o.metric.current_calc </MenuItem>{/*definisco i sensori 
-                            <MenuItem value="2">o.metric.temperature.remote</MenuItem>
-                        </Select>
-                    </FormControl> */}
                 <Typography variant="h5"
                     sx={{ marginTop: "20px", color: "rgb(42, 182, 131)", fontFamily: "Poppins, Roboto", fontSize: "30px", fontWeight: 700 }}>
                     Last n record

@@ -6,19 +6,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 
-import TableHomeGrid1 from './table/tableGrid1' //import table
-import TableHomeGrid2 from './table/tableGrid2'
-import TableDataSource from './table/tableDataSource'
-import TableServices from './table/tableServices'
-
-
-import SelectForecasted from './select/selectForecasted' //importo menu tendina per forecast
-import SelectOptimized from './select/selectOptimized'   //importo menu tendina per optimized
-
-import Chart from './chart' //importo chart
-
-import DateAndTime from './dateAndTime' //importo data e orario per gli chart
-
 import ASMHQ from './ASMHQ'
 import DSO from './DSO'
 import ENDUSER from './endUser'
@@ -88,20 +75,15 @@ export default function BasicTabs() {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} variant="fullWidth" aria-label="basic tabs example">
-          <Tab label="Home" {...a11yProps(0)} />
-          <Tab label="Historical data" {...a11yProps(1)} />
-          <Tab label="Forecasted data" {...a11yProps(2)} />
-          <Tab label="Optimized data" {...a11yProps(3)} />
-          <Tab label="DSO" {...a11yProps(4)} />
-          <Tab label="Energiot" {...a11yProps(5)} />
+          <Tab label="Historical data" {...a11yProps(0)} />
+          <Tab label="Forecasted data" {...a11yProps(1)} />
+          <Tab label="Optimized data" {...a11yProps(2)} />
+          <Tab label="DSO" {...a11yProps(3)} />
+          <Tab label="Energiot" {...a11yProps(4)} />
         </Tabs>
       </Box>
 
-      <TabPanel value={value} index={0}> {/* home */}
-        <OPTIMIZED />
-      </TabPanel>
-
-      <TabPanel value={value} index={1}> {/* historical data */}
+      <TabPanel value={value} index={0}> {/* historical data */}
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}> {/* sub dashboard historical data */}
           <Tabs value={valuesub} onChange={handleChange1} aria-label="basic example">
             <Tab label="End user" {...a11yProps(0)} />
@@ -118,17 +100,17 @@ export default function BasicTabs() {
         </TabPanel>
       </TabPanel>
 
-      <TabPanel value={value} index={2}> {/* forecast data*/}
+      <TabPanel value={value} index={1}> {/* forecast data*/}
         <FORECASTED />
       </TabPanel>
 
-      <TabPanel value={value} index={3}> {/* optimized data */}
+      <TabPanel value={value} index={2}> {/* optimized data */}
         <OPTIMIZED />
       </TabPanel>
-      <TabPanel value={value} index={4}> {/* componenti nuovi */}
+      <TabPanel value={value} index={3}> {/* componenti nuovi */}
         <DSO />
       </TabPanel>
-      <TabPanel value={value} index={5}> {/* componenti nuovi */}
+      <TabPanel value={value} index={4}> {/* componenti nuovi */}
         <ENERGIOT />
       </TabPanel>
 

@@ -42,69 +42,17 @@ export default function CreateChart() {
     const [failMessage, setFailMessage] = useState(false)
 
 
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                width: 250,
-            },
-        },
-    };
-
-    const sensorID = [ //nomi dei sensori
-        'BBB6150',
-        'BBB6152',
-        'BBB6154',
-        'BBB6155',
-        'BBB6156',
-        'BBB6157',
-        'BBB6158',
-        'BBB6159',
-        'BBB6160',
-        'BBB6161',
-        'BBB6162',
-        'BBB6163',
-        'BBB6164',
-        'BBB6166',
-        'BBB6167',
-        'BBB6168',
-        'BBB6169',
-        'BBB6170',
-        'BBB6171',
-        'BBB6173',
-        'BBB6174',
-    ];
-
-
-    function getStyles(name, sensor, theme) {
-        return {
-            fontWeight:
-                sensor === sensorID
-                    ? theme.typography.fontWeightRegular
-                    : theme.typography.fontWeightMedium,
-        };
-    }
-
-    const theme = useTheme();
-    const handleChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setSensor(value);
-    };
-
-    const handleSelectServiceIdChange = (event) => { //funzione per settare lo stato iniziale
+    const handleSelectSensorChange = (event) => { //funzione per settare lo stato iniziale
         const value = event.target.value;
-        setServiceId(value);
+        setSensor(value);
         // Effettua le modifiche ai valori della seconda select in base alla selezione nella prima select
     };
 
-    const sendSelectSensorIdServiceIdDAteStartAndDateEndToBackend = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
-        fetch('http://localhost:8080/api/sensorIdServiceIdDateStartAndDateend', { //collegamento back-end
+
+    const sendSelectSensorIdToBackend = () => { //funzione per mandare i dati al back-end per la select, menu a tendina
+        fetch('http://localhost:8080/api/sensorId', { //collegamento back-end
             method: 'POST',
-            body: JSON.stringify({ sensor, serviceId }),
+            body: JSON.stringify({ sensor }),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -134,21 +82,17 @@ export default function CreateChart() {
             },
         ],
     });
-
     const changeLabels = () => {
-        if (serviceId === '1') {
-            setLabelCharter('Active power [kW]')
+        if (serviceId === 'Active Power') {
+          setLabelCharter('Active Power')
         }
-        else if (serviceId === '2') {
-            setLabelCharter('Apparent power [kVA]')
-        }
-    }
+      }
 
 
     function newChart() {
         changeLabels();
         setChart({ //funzione bottone per cambiare grafico
-            labels: numbers, // asse x
+            labels: dateTime, // asse x
             datasets: [
                 {
                     label: labelCharter,
@@ -178,15 +122,21 @@ export default function CreateChart() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
             const responseData = await response.json();
             console.log('Response:', responseData);
-
             const predictionArray = [];
-
+            let tempDateTime = [];
+            let tempValue = [];
+            responseData.forEach((element) => {
+                // Accedi agli attributi ontime e value per ciascun elemento e aggiungili agli array temporanei
+                //console.log('date:',element.ontime)
+                tempDateTime.push(element.ontime);
+                //console.log('value:',element.value)
+                tempValue.push(element.value)
+            });
             // Estrai i numeri dalla stringa di previsione utilizzando una espressione regolare
-            const predictionMatches = responseData.Prediction.match(/-?\d+\.\d+/g);
-
+            tempValue.forEach((element2) => {
+                const predictionMatches = element2.match(/-?\d+\.\d+/g);
             if (predictionMatches) {
                 for (const match of predictionMatches) {
                     const predictionValue = parseFloat(match);
@@ -196,12 +146,14 @@ export default function CreateChart() {
                 }
             } else {
                 console.error('Nessun valore numerico di previsione trovato.');
-            }
-
+            } 
             console.log('Prediction Array:', predictionArray);
-
+            });
             if (predictionArray.length > 0) {
                 setNumbers(predictionArray);
+                setDateTime(tempDateTime)
+                console.log(predictionArray)
+                console.log(tempDateTime)
                 newChart(); // Avvia la funzione per cambiare stato allo chart
             }
         } catch (error) {
@@ -224,31 +176,21 @@ export default function CreateChart() {
         <Box sx={{ minWidth: 60 }}> {/*box per la prima select, menu a tendina, meter */}
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                 <InputLabel id="demo-multiple-name-label">Sensor</InputLabel>
-                <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    value={sensor}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Sensor" />}
-                    MenuProps={MenuProps}
-                >
-                    {sensorID.map((name) => (
-                        <MenuItem
-                            key={name}
-                            value={name}
-                            style={getStyles(name, sensor, theme)}
-                        >
-                            {name}
-                        </MenuItem>
-                    ))}
+                <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={sensor} onChange={handleSelectSensorChange}>
+                    <MenuItem value="W4">W4</MenuItem>{/*definisco i sensori */}
+                    <MenuItem value="W6">W6</MenuItem>
                 </Select>
             </FormControl>
             <Box> {/*box per la seconda select, menu a tendina, power */}
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                     <InputLabel id="demo-simple-select-label" disabled={!sensor}>Service id</InputLabel>
-                    <Select labelId="demo-simple-select-label" id="demo-simple-select-meter" value={serviceId} onChange={handleSelectServiceIdChange} disabled={!sensor}>{/*Disabilita la seconda select se la prima select non è selezionata*/}
-                        <MenuItem value="1">1-Active power [kW] </MenuItem>{/*definisco i sensori */}
-                        <MenuItem value="2">2-Apparent power [kVA]</MenuItem>
+                    <Select labelId="demo-simple-select-label" id="demo-simple-select-power" value={serviceId} disabled={!sensor} onChange={(event) => setServiceId(event.target.value)}>
+                        {sensor === 'W4' && [
+                            <MenuItem key="valore1" value="Active Power">Active Power</MenuItem>,
+                        ]}
+                        {sensor === 'W6' && [
+                            <MenuItem key="valore4" value="Active Power">Active Power</MenuItem>,
+                        ]}
                     </Select>
                 </FormControl>
                 <Typography variant="h5"
@@ -256,7 +198,7 @@ export default function CreateChart() {
                     Forecasted data
                 </Typography> {/*serve per il testo visualizzato in pagina*/}
                 <Box textAlign={"center"} sx={{ marginTop: 5 }}>
-                    <Button variant="contained" onClick={() => { handleSubmitClick(); }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
+                    <Button variant="contained" onClick={() => { handleSubmitClick(); sendSelectSensorIdToBackend() }}> Search</Button> {/*qui definisco il bottone search, dove al click sono collegati le funzioni per mandare i dati al server per eseguire la query(sendSelectBackend(); sendDataStartToBackend(); sendDataEndToBackend();) e la funzione per prendere i dati dalla query e metterli sullo chart (handleSubmitClick())*/}
                     {failMessage && <p style={{ color: 'red' }}>Please, fill in the fields above.</p>}
                     <Box sx={{ marginTop: '20px', height: '600px', width: '1300px' }}>
                         <Line data={chart}></Line> {/*qui definisco il componente chart*/}
