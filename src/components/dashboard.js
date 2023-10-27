@@ -55,7 +55,6 @@ function a11yProps(index) {
 export default function BasicTabs() {
   const [value, setValue] = useState(0);
   const [valuesub, setValueSub] = useState(0);
-  const [setValueDate] = useState();
 
 
   const handleChange = (event, newValue) => {

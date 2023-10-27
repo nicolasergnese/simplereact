@@ -68,11 +68,6 @@ export default function CreateDsoDahsboard() {
     const handleChangeDateAndTimeEnd = (newValue) => { //funzione per settare un nuovo stato
         setValueEnd(newValue);
     };
-    /*   const [requestID, setRequestID] = useState(0); //setto l'ID
-  
-    const countID = () => { //funzione per aumentare ID di 1 ad ogni click
-      setRequestID(prevID => prevID + 1);
-    }; */
 
     const sendDataEnergyValueToBackend = () => {
         const epochDateEnd = valueEnd.unix(); //valore data in epoch
@@ -100,16 +95,6 @@ export default function CreateDsoDahsboard() {
     };
 
     //inizio codice per maxPrice
-
-
-    /* const handleInputChangeMaxPrice = (event) => { //serve per modificare il valore e salvarlo
-        setMaxPriceValue(event.target.value);
-    }; */
-    //codice  finito per maxPrice
-
-
-    //codice per select charging station id
-
     const handleSelect1Change = (event) => { //funzione per settare lo stato iniziale
         const value = event.target.value;
         setChargingStationId(value);
@@ -213,9 +198,6 @@ export default function CreateDsoDahsboard() {
 
     const handleSubmitClick = async () => {
         try {
-            /* if (energyValue === '' || chargingStationId === '' || maxPriceValue === '' || valueStart === '' || valueEnd === '') {
-                setFailMessageSubmit(true); 
-            } else {*/
             setFailMessageSubmit(false);
             const response = await fetch("http://localhost:8080/api/tablerequest", {
                 method: "GET",
@@ -296,7 +278,7 @@ export default function CreateDsoDahsboard() {
                             const extraValue = offer.extraValue;
                             // Fai qualcosa con winnerID e minExtraValue
                             // Esempio di output nel console.log per ciascun oggetto
-                            console.log('Author:', author);
+                            //console.log('Author:', author);
                             console.log('ID Value:', idValue);
                             console.log('Extra Value:', extraValue);
 
@@ -305,8 +287,8 @@ export default function CreateDsoDahsboard() {
                             // Esempio di chiamata a una funzione per aggiungere una riga per ogni offerta
                             addRowOffer(author, idValue, extraValue);
                         });
-                        console.log('winnerID:', winnerID);
-                        console.log('minExtraValue:', minExtraValue);
+                        //console.log('winnerID:', winnerID);
+                        //console.log('minExtraValue:', minExtraValue);
                         setOpen(true)
                         //alert(`Referring to the choice of request ID =  ${IDUser}, the winning bid in the relevant list is : # = ${winnerID} - price = ${minExtraValue}. \n\nTo see the list of offers related to the request ID, click OK`);
                     })
@@ -385,9 +367,9 @@ export default function CreateDsoDahsboard() {
                     //const formattedStartDate = startDate.toLocaleString(); // Converte la data in una stringa leggibile
                     setStartDateCard(formattedStartDate);
                     // Esempio di output nel console.log
-                    console.log('End Date:', deadlineCard);
-                    console.log('Quantity:', quantityCard);
-                    console.log('Start Date:', startDateCard);
+                    //console.log('End Date:', deadlineCard);
+                    //console.log('Quantity:', quantityCard);
+                    //console.log('Start Date:', startDateCard);
 
                     // Puoi fare ulteriori operazioni con i dati come desiderato
 
@@ -469,16 +451,6 @@ export default function CreateDsoDahsboard() {
                                 onChange={handleInputChangeEnergy}
                             />
                             <Box> {/*qui definisco il componente maxPrice*/}
-                                {/* <TextField
-                                    label="MaxPrice:"
-                                    id="outlined-start-adornment"
-                                    sx={{ m: 1, width: '25ch' }}
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="end">Token</InputAdornment>,
-                                    }}
-                                    value={maxPriceValue}
-                                    onChange={handleInputChangeMaxPrice}
-                                /> */}
                                 <Box sx={{ minWidth: 60 }}> {/*box per la select, menu a tendina, charging station id */}
                                     <FormControl sx={{ m: 1, width: '25ch' }} size="small">
                                         <InputLabel id="demo-simple-select-label">Charging Station ID</InputLabel>

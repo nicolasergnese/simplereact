@@ -3,26 +3,13 @@ import { Chart as ChartJS, Title, Tooltip, LineElement, Legend, CategoryScale, L
 import { Line } from 'react-chartjs-2';//grafico che voglio
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-
-
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
-
 import FormControl from '@mui/material/FormControl';
-
 import { Select, MenuItem } from '@mui/material';
-
-import Typography from '@mui/material/Typography';
-
-import dayjs from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
+import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles';
 
-import axios from 'axios';
 
 
 ChartJS.register( //caratteristiche chart
@@ -182,14 +169,6 @@ export default function CreateChart() {
                     pointBorderColor: 'purple', // Cambia il colore dei punti
                     responsive: true
                 }
-
-                /* {
-                    label: 'Linea 2',
-                    data: numbers2,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                } */
             ],
         })
     }

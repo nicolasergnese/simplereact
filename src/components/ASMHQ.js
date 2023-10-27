@@ -194,7 +194,7 @@ export default function CreateChart() {
           return responseData;
         } else {
           // handle error
-          console.log(response);
+          //console.log(response);
           const errorResponse = {
             status: response.status,
             message: response.statusText,

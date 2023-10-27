@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 
 
 import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
 
 import FormControl from '@mui/material/FormControl';
 
@@ -14,15 +13,6 @@ import { Select, MenuItem } from '@mui/material';
 
 import Typography from '@mui/material/Typography';
 
-import dayjs from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
-import { useTheme } from '@mui/material/styles';
-
-import axios from 'axios';
 
 
 ChartJS.register( //caratteristiche chart
